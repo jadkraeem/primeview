@@ -9,6 +9,7 @@ Website of PrimeView, our website and app design company (global-company standar
 ## Stack
 - Static site, no build step: [index.html](index.html), [css/site.css](css/site.css), [js/site.js](js/site.js).
 - All content (services, prices, phones, work, testimonials) lives in one object: [js/content.js](js/content.js). Phase 2 loads it from Supabase (`pv_` tables in the Mr Black project) and keeps content.js as fallback.
+- Work videos are made by [tools/video/](tools/video/) from test-account screenshots only (never real client data).
 - Escape every value with `esc()` before inserting HTML; links go through `safeHref()`.
 
 ## Design
