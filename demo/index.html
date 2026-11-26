@@ -66,18 +66,21 @@
       </div>
     </section>
 
-    <!-- الجوال والتابلت: أزرار تفتح كل شاشة -->
-    <section class="pick wrap" aria-label="اختر الشاشة">
-      <a class="pick-card card reveal" href="app/index.html?table=5">
-        <span class="pick-icon">📱</span><b>منيو الزبون</b><small>كأنك جالس على طاولة 5 ومسحت رمز QR</small>
+    <!-- الجوال والتابلت: زر واحد واضح، والدليل يأخذ الزائر خطوة بخطوة -->
+    <section class="pick wrap" aria-label="ابدأ التجربة">
+      <a class="start-btn reveal" href="app/index.html?table=5">
+        <span class="start-icon" aria-hidden="true">📱</span>
+        <span><b>ابدأ التجربة</b><small>أنت زبون جالس على طاولة 5</small></span>
+        <span class="start-arrow" aria-hidden="true">←</span>
       </a>
-      <a class="pick-card card reveal" href="app/kitchen.html?as=kitchen">
-        <span class="pick-icon">👨‍🍳</span><b>شاشة المطبخ</b><small>الطلبات الجديدة تظهر مع تنبيه صوتي</small>
-      </a>
-      <a class="pick-card card reveal" href="app/casher.html?as=manager">
-        <span class="pick-icon">💵</span><b>الكاشير والإدارة</b><small>نقطة بيع، ورديات، مخزون، تقارير وأرباح</small>
-      </a>
-      <p class="pick-tip muted">💡 افتح المنيو بتبويب والمطبخ بتبويب ثانٍ بنفس المتصفح، واطلب من المنيو: الطلب يظهر بالمطبخ فوراً.</p>
+      <p class="pick-tip muted reveal">شريط بأسفل الشاشة يرشدك بكل خطوة، وطلبك يكون مُضاءً حتى تعرفه 👌</p>
+      <details class="pick-more reveal">
+        <summary>أو افتح شاشة معيّنة مباشرة</summary>
+        <div>
+          <a href="app/kitchen.html?as=kitchen">👨‍🍳 شاشة المطبخ</a>
+          <a href="app/casher.html?as=manager">💵 الكاشير والإدارة</a>
+        </div>
+      </details>
     </section>
 
     <section class="demo-foot wrap reveal">

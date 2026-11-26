@@ -71,7 +71,7 @@ function render(c, prev = null) {
         <span class="work-tag">${esc(w.tag)}</span>
         <h3>${esc(w.title)}</h3>
         <p>${esc(w.text)}</p>
-        ${link ? `<a class="btn btn-ghost magnetic" href="${esc(link)}" ${link.startsWith('demo/') ? '' : 'target="_blank" rel="noopener"'}>جرّب النظام مباشرة <span aria-hidden="true">←</span></a>` : ''}
+        ${link ? `<a class="btn ${link.startsWith('demo/') ? 'btn-try' : 'btn-ghost'} magnetic" href="${esc(link)}" ${link.startsWith('demo/') ? '' : 'target="_blank" rel="noopener"'}>🧪 جرّب النظام مباشرة <span aria-hidden="true">←</span></a>` : ''}
       </div>
     </article>`;
   }).join('');
@@ -228,6 +228,19 @@ function observeReveals() {
   });
 }
 
+// تحميل فيديوهات "أعمالنا" مسبقاً بعد ما تكتمل الواجهة، حتى تكون جاهزة
+// لحظة وصول الزائر إليها (بدل أن يبدأ التحميل عندها ويتأخر)
+function preloadVideos() {
+  const go = () => $$('.work-media video').forEach((v) => {
+    if (v.dataset.pre) return;
+    v.dataset.pre = '1';
+    v.preload = 'auto';
+    v.load();
+  });
+  const later = () => ('requestIdleCallback' in window ? requestIdleCallback(go, { timeout: 2500 }) : setTimeout(go, 1200));
+  if (document.readyState === 'complete') later(); else addEventListener('load', later, { once: true });
+}
+
 // إيقاف الحركات اللانهائية للأقسام غير الظاهرة على الشاشة
 function pauseOffscreen() {
   const io = new IntersectionObserver((entries) => {
@@ -382,6 +395,7 @@ function setupNav() {
   setupBilling();
   setupForm();
   observeReveals();
+  preloadVideos();
   pauseOffscreen();
   scrollEffects();
   tiltAndGlow();
@@ -395,5 +409,6 @@ function setupNav() {
     if (JSON.stringify(fresh) === JSON.stringify(current)) return;
     render(fresh, current);
     observeReveals();
+    preloadVideos();
   });
 })();

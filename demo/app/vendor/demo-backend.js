@@ -10,7 +10,8 @@
 (function () {
   'use strict';
 
-  const DB_KEY = 'pv-demo-db-v1';
+  const DB_KEY = 'pv-demo-db-v2';          // v2: يبدأ بلا طلبات مفتوحة (الزبون يرى طلبه فقط)
+  const GUIDE_KEY = 'pv-demo-guide';
   const SESSION_PREFIX = 'pv-demo-session:';
   const DEMO_IP = '203.0.113.25';
   const PASSWORD = 'demo1234';
@@ -150,6 +151,7 @@
     };
     const expenseCats = [['supplies', 'حليب وبن وسكر', 180000], ['utilities', 'فاتورة كهرباء', 90000], ['maintenance', 'صيانة ماكينة القهوة', 120000], ['marketing', 'إعلان إنستغرام', 60000], ['other', 'مستلزمات تنظيف', 35000]];
 
+    // الأيام السابقة فقط فيها طلبات (للتقارير). اليوم يبدأ فارغاً بوردية مفتوحة.
     for (let d = 7; d >= 0; d--) {
       const sid = ++db.seq.shifts;
       const opened = at(d, 8, 30);
@@ -158,7 +160,7 @@
       const isToday = d === 0;
       const nowH = new Date().getHours();
       const lastHour = isToday ? Math.max(9, Math.min(22, nowH - 1)) : 22;
-      const count = isToday ? Math.min(6, Math.max(2, lastHour - 8)) : 10 + Math.floor(R() * 9);
+      const count = isToday ? 0 : 10 + Math.floor(R() * 9);
       const times = [];
       for (let k = 0; k < count; k++) times.push(at(d, 9 + Math.floor(R() * Math.max(1, lastHour - 9)), Math.floor(R() * 60)));
       times.sort((a, b) => a - b);
@@ -167,7 +169,7 @@
         const cancel = !isToday && R() < 0.06;
         addOrder(tm, sid, cancel ? { status: 'cancelled' } : { paid: true });
       });
-      if (R() < 0.75 || d === 3) {
+      if (!isToday && (R() < 0.75 || d === 3)) {
         const [cat, desc, amt] = d === 3 ? ['salaries', 'رواتب الأسبوع', 600000] : pick(expenseCats);
         const fromDrawer = cat === 'supplies' || cat === 'other';
         const when = new Date(Math.min(at(d, 12, 15).getTime(), Date.now() - 36e5)).toISOString();
@@ -181,12 +183,6 @@
         Object.assign(shift, { closed_by: csh, closed_at: at(d, 23, 5).toISOString(), expected_cash: expected, counted_cash: counted, difference: counted - expected, note: d === 4 ? 'نقص بسيط في الفكة' : null });
       }
     }
-    // طلبات مفتوحة الآن حتى تكون شاشة المطبخ والكاشير حيّة من أول لحظة
-    const mins = (m) => new Date(Date.now() - m * 6e4);
-    addOrder(mins(14), null, { status: 'ready' });
-    addOrder(mins(7), null, { status: 'preparing' });
-    addOrder(mins(26), null, { status: 'served' });
-
     // رصيد المخزون الافتتاحي قبل أسبوع = الرصيد الحالي + ما بيع
     db.menu_items.filter((m) => m.track_stock).forEach((m) => {
       const opening = m.stock_qty + (sold[m.id] || 0);
@@ -222,8 +218,10 @@
   const db0 = () => { cache = null; return load(); };   // قراءة حديثة دائماً (قد تكون صفحة أخرى غيّرت البيانات)
 
   const channels = new Set();
+  let onDataChange = () => {};
   function dispatch(ev) {
     channels.forEach((ch) => ch._deliver(ev));
+    onDataChange();
   }
   const MENU_TABLES = ['categories', 'offers', 'events', 'settings', 'menu_items'];
   const menuSignal = (table) => ({ kind: 'broadcast', topic: 'menu-updates', event: 'changed', payload: { table } });
@@ -937,6 +935,10 @@
       const db = db0();
       const events = [];
       const data = fn(db, me(), params || {}, events);
+      // الدليل يتبع أول طلب يرسله الزائر
+      if ((name === 'place_order' || name === 'pos_create_order') && data && !guideOrderId()) {
+        try { localStorage.setItem(GUIDE_KEY, JSON.stringify({ orderId: data.order_id })); } catch (e) { /* تجاهل */ }
+      }
       commit(db, events);
       return { data: data === undefined ? null : clone(data), error: null };
     } catch (e) {
@@ -995,9 +997,15 @@
   // =========================================================
   // الواجهة: شريط "نسخة تجريبية" + دخول سريع بضغطة
   // =========================================================
+  function guideOrderId() {
+    try { return (JSON.parse(localStorage.getItem(GUIDE_KEY) || 'null') || {}).orderId || null; } catch (e) { return null; }
+  }
+
   function resetDemo() {
     try {
       localStorage.removeItem(DB_KEY);
+      localStorage.removeItem(GUIDE_KEY);
+      localStorage.removeItem('pv-demo-db-v1');
       Object.keys(localStorage).filter((k) => k.startsWith('mrblack-cart-')).forEach((k) => localStorage.removeItem(k));
     } catch (e) { /* تجاهل */ }
     cache = null;
@@ -1006,27 +1014,121 @@
   }
   bc?.addEventListener('message', (m) => { if (m.data && m.data.kind === 'reset') location.reload(); });
 
+  // =========================================================
+  // الدليل خطوة بخطوة: اطلب ← حضّر بالمطبخ ← حصّل بالكاشير
+  // يتبع طلب الزائر نفسه ويُبرزه بإطار مضيء حتى لا يضيع بين الطلبات.
+  // =========================================================
+  const PAGE = page.replace(/_html$/, '');            // index | kitchen | casher
+  const LINKS = { menu: 'index.html?table=5', kitchen: 'kitchen.html?as=kitchen', cashier: 'casher.html?as=cashier#orders', contact: '../../#contact' };
+  const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+
+  function guideState() {
+    const id = guideOrderId();
+    const o = id ? db0().orders.find((x) => x.id === id) : null;
+    if (!o) return { s: 'none' };
+    if (o.status === 'cancelled') return { s: 'cancelled', id };
+    if (o.paid_at) return { s: 'done', id };
+    if (o.status === 'ready' || o.status === 'served') return { s: 'ready', id };
+    return { s: o.status, id };            // new | preparing
+  }
+
+  function guideContent({ s, id }) {
+    const n = `<b>#${id}</b>`;
+    const go = (href, label) => ({ href, label });
+    if (s === 'none') {
+      return PAGE === 'index'
+        ? { step: '1 من 3', msg: 'اختر أي صنف واضغط «+ أضف للسلة»، ثم افتح السلة 🛒 بالأعلى واضغط «إرسال الطلب»' }
+        : { step: '1 من 3', msg: 'ابدأ كزبون: اطلب أي صنف من المنيو', btn: go(LINKS.menu, 'افتح المنيو ←') };
+    }
+    if (s === 'new' || s === 'preparing') {
+      if (PAGE === 'kitchen') {
+        return s === 'new'
+          ? { step: '2 من 3', msg: `هذا طلبك ${n} 👇 اضغط «بدء التحضير»` }
+          : { step: '2 من 3', msg: `ممتاز! الآن اضغط «جاهز ✓» على طلبك ${n}` };
+      }
+      return { ok: true, msg: `✓ وصل طلبك ${n} للمطبخ بنفس اللحظة!`, btn: go(LINKS.kitchen, 'الخطوة 2: شوف المطبخ ←') };
+    }
+    if (s === 'ready') {
+      if (PAGE === 'casher') return { step: '3 من 3', msg: `اضغط «💵 تحصيل» على طلبك ${n} ثم «تأكيد الدفع»` };
+      return { ok: true, msg: `✓ طلبك ${n} جاهز!`, btn: go(LINKS.cashier, 'الخطوة 3: حصّل من الكاشير ←') };
+    }
+    if (s === 'cancelled') return { msg: `تم إلغاء الطلب ${n}.`, reset: true };
+    return { ok: true, done: true, msg: '🎉 خلصت التجربة! هيك بيشتغل النظام بمقهاك', btn: go(LINKS.contact, 'اطلب نظامك ←'), reset: true };
+  }
+
+  let guideBox = null;
+  let lastKey = '';
+  const scrolledTo = new Set();
+  function updateGuide() {
+    const st = guideState();
+    // إبراز طلب الزائر في المطبخ والكاشير
+    let hl = document.getElementById('pvd-hl');
+    if (!hl) { hl = document.createElement('style'); hl.id = 'pvd-hl'; document.head.appendChild(hl); }
+    hl.textContent = st.id ? `article.order[data-id="${st.id}"]{outline:3px solid #2bb3a3!important;outline-offset:3px;box-shadow:0 0 0 9px rgba(43,179,163,.28)!important;animation:pvd-pulse 1.8s ease-in-out infinite}` : '';
+    const card = st.id && document.querySelector(`article.order[data-id="${st.id}"]`);
+    const key = `${st.s}:${PAGE}`;
+    if (card && !scrolledTo.has(key)) { scrolledTo.add(key); card.scrollIntoView({ block: 'center', behavior: 'smooth' }); }
+
+    if (!guideBox) return;
+    // أثناء فتح نافذة (السلة، الدفع…) ننقل الشريط لأعلى الشاشة حتى لا يغطي أزرارها
+    guideBox.classList.toggle('pvd-top', !!document.querySelector('.modal-backdrop'));
+    const c = guideContent(st);
+    const html = `
+      ${c.step ? `<span class="pvd-step">${c.step}</span>` : ''}
+      <span class="pvd-msg ${c.ok ? 'is-ok' : ''}">${c.msg}</span>
+      ${c.btn ? `<a class="pvd-go" href="${esc(c.btn.href)}" ${c.done ? 'target="_top"' : ''}>${c.btn.label}</a>` : ''}
+      <span class="pvd-tools">${c.reset ? '<button type="button" data-pvd-reset class="pvd-again">↺ جرّب من جديد</button>' : '<button type="button" data-pvd-reset title="البدء من جديد">↺</button>'}<a href="../" title="رجوع إلى PrimeView">✕</a></span>`;
+    if (html === lastKey) return;
+    lastKey = html;
+    guideBox.innerHTML = html;
+    guideBox.classList.remove('pvd-pop'); void guideBox.offsetWidth; guideBox.classList.add('pvd-pop');
+  }
+  let guideTimer = null;
+  const scheduleGuide = () => { clearTimeout(guideTimer); guideTimer = setTimeout(updateGuide, 120); };
+  onDataChange = scheduleGuide;
+
   function ui() {
     const css = document.createElement('style');
     css.textContent = `
-      .pvd-bar{position:fixed;z-index:9999;bottom:10px;left:50%;transform:translateX(-50%);white-space:nowrap;display:flex;align-items:center;gap:8px;padding:6px 6px 6px 12px;border-radius:999px;
-        background:linear-gradient(120deg,#0e9f6e,#2bb3a3 50%,#5bbfe9);color:#fff;font:600 12.5px/1.2 system-ui,'Cairo',sans-serif;box-shadow:0 10px 30px -10px rgba(14,159,110,.7);direction:rtl}
-      .pvd-bar button,.pvd-bar a{all:unset;cursor:pointer;background:rgba(255,255,255,.22);padding:5px 10px;border-radius:999px;font-weight:700}
-      .pvd-bar button:hover,.pvd-bar a:hover{background:rgba(255,255,255,.35)}
+      .pvd-guide{position:fixed;z-index:9999;left:50%;bottom:12px;transform:translateX(-50%);width:min(620px,calc(100% - 16px));display:flex;flex-wrap:wrap;align-items:center;gap:8px 10px;
+        padding:12px 14px;border-radius:18px;background:#0f2a2a;color:#fff;font:600 14px/1.5 system-ui,'Cairo',sans-serif;direction:rtl;
+        box-shadow:0 18px 40px -12px rgba(0,0,0,.55),inset 0 0 0 1px rgba(255,255,255,.08)}
+      .pvd-guide b{color:#7fe3c0}
+      .pvd-step{flex:none;padding:3px 10px;border-radius:999px;background:linear-gradient(120deg,#0e9f6e,#5bbfe9);font-size:12px;font-weight:800}
+      .pvd-msg{flex:1 1 220px}
+      .pvd-msg.is-ok{color:#bff3df}
+      .pvd-go{flex:none;all:unset;cursor:pointer;padding:9px 16px;border-radius:999px;background:linear-gradient(120deg,#0e9f6e,#2bb3a3 50%,#5bbfe9);color:#fff;font-weight:800;
+        box-shadow:0 8px 20px -8px rgba(43,179,163,.9);animation:pvd-nudge 1.6s ease-in-out infinite}
+      .pvd-tools{display:flex;gap:6px;margin-inline-start:auto}
+      .pvd-tools button,.pvd-tools a{all:unset;cursor:pointer;min-width:30px;height:30px;padding:0 8px;box-sizing:border-box;display:grid;place-items:center;border-radius:999px;background:rgba(255,255,255,.12);font-size:13px}
+      .pvd-tools .pvd-again{background:rgba(255,255,255,.2);font-weight:800}
+      .pvd-pop{animation:pvd-pop .45s cubic-bezier(.22,1,.36,1)}
+      .pvd-guide.pvd-top,body:has(.modal-backdrop) .pvd-guide{top:10px;bottom:auto}
+      @keyframes pvd-pop{from{transform:translate(-50%,24px);opacity:0}}
+      @keyframes pvd-nudge{50%{transform:translateX(-4px)}}
+      @keyframes pvd-pulse{50%{box-shadow:0 0 0 14px rgba(43,179,163,.12)}}
+      body.pvd-has-guide{padding-bottom:110px}
+      @media (max-width:560px){.pvd-guide{bottom:8px;font-size:13.5px;padding:11px 12px}.pvd-go{width:100%;text-align:center;box-sizing:border-box}}
       .pvd-quick{margin-top:14px;padding:12px;border-radius:12px;border:1px dashed currentColor;opacity:.95;text-align:center;font-size:13px}
       .pvd-quick p{margin:0 0 8px}
       .pvd-quick div{display:flex;gap:6px;justify-content:center;flex-wrap:wrap}
       .pvd-quick button{cursor:pointer;border:0;border-radius:999px;padding:7px 12px;font:inherit;font-weight:700;background:linear-gradient(120deg,#0e9f6e,#5bbfe9);color:#fff}
-      @media print{.pvd-bar{display:none}}`;
+      @media print{.pvd-guide{display:none}}`;
     document.head.appendChild(css);
-    // داخل صفحة التجربة (iframe) لا نعرض الشريط: الصفحة الأم فيها زر "من جديد"
+    // داخل صفحة التجربة على الكمبيوتر (iframe) لا نعرض الدليل: الصفحة الأم تشرح الخطوات
     if (window.top === window.self) {
-      const bar = document.createElement('div');
-      bar.className = 'pvd-bar';
-      bar.innerHTML = '🧪 نسخة تجريبية — البيانات وهمية <button type="button" data-pvd-reset title="مسح كل التجارب والبدء من جديد">↺ من جديد</button><a href="../">PrimeView ↩</a>';
-      bar.querySelector('[data-pvd-reset]').onclick = () => { if (confirm('مسح كل ما جرّبته والبدء ببيانات جديدة؟')) resetDemo(); };
-      document.body.appendChild(bar);
+      guideBox = document.createElement('div');
+      guideBox.className = 'pvd-guide';
+      guideBox.setAttribute('role', 'status');
+      guideBox.addEventListener('click', (e) => {
+        if (e.target.closest('[data-pvd-reset]') && confirm('مسح كل ما جرّبته والبدء من جديد؟')) resetDemo();
+      });
+      document.body.appendChild(guideBox);
+      document.body.classList.add('pvd-has-guide');
     }
+    updateGuide();
+    new MutationObserver(scheduleGuide).observe(document.body, { childList: true, subtree: true });
+    setInterval(updateGuide, 2500);
 
     // أزرار الدخول السريع على شاشة تسجيل الدخول
     const addQuick = () => {

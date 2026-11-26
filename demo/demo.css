@@ -32,12 +32,23 @@
 @keyframes fadeView { from { opacity: 0; transform: translateY(10px); } }
 
 /* ---------- اختيار الشاشة (جوال) ---------- */
-.pick { display: none; gap: 14px; }
-.pick-card { display: grid; gap: 4px; text-align: center; padding: 26px 20px; }
-.pick-icon { font-size: 2.2rem; }
-.pick-card b { font-family: var(--font-head); font-size: 1.2rem; }
-.pick-card small { color: var(--muted); }
+.pick { display: none; gap: 14px; max-width: 520px; }
+.start-btn {
+  display: flex; align-items: center; gap: 14px; padding: 18px 20px; border-radius: 22px;
+  background: var(--grad); color: var(--on-grad); box-shadow: 0 18px 36px -14px var(--emerald);
+  animation: startGlow 2.4s ease-in-out infinite;
+}
+.start-btn b { display: block; font-family: var(--font-head); font-size: 1.35rem; line-height: 1.2; }
+.start-btn small { display: block; opacity: .9; font-weight: 500; }
+.start-icon { width: 52px; height: 52px; flex: none; display: grid; place-items: center; font-size: 1.6rem; border-radius: 16px; background: rgba(255,255,255,.22); }
+.start-arrow { margin-inline-start: auto; font-size: 1.6rem; font-weight: 700; animation: nudge 1.4s ease-in-out infinite; }
+@keyframes startGlow { 50% { box-shadow: 0 18px 44px -10px var(--sky); } }
+@keyframes nudge { 50% { transform: translateX(-6px); } }
 .pick-tip { text-align: center; font-size: .92rem; }
+.pick-more { text-align: center; color: var(--muted); font-size: .92rem; }
+.pick-more summary { cursor: pointer; padding: 8px; }
+.pick-more div { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; margin-top: 8px; }
+.pick-more a { padding: 9px 16px; border-radius: var(--pill); background: var(--card); box-shadow: inset 0 0 0 1px var(--line); color: var(--text); font-weight: 600; }
 
 /* ---------- الخاتمة ---------- */
 .demo-foot { padding-block: 60px 90px; }

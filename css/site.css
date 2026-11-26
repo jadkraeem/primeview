@@ -99,6 +99,16 @@ h2 { font-size: clamp(1.7rem, 3.6vw, 2.6rem); }
   transform: translateX(120%); transition: transform .8s var(--ease);
 }
 .btn-primary:hover::after { transform: translateX(-120%); }
+/* زر "جرّب النظام": الأوضح بالموقع، بتوهّج نابض (opacity/transform فقط، خفيف على الجوال) */
+.btn-try { background: var(--grad); color: var(--on-grad); overflow: visible; font-weight: 700; white-space: nowrap; }
+.btn-try::before {
+  content: ''; position: absolute; inset: -4px; z-index: -1; border-radius: inherit; background: var(--grad);
+  box-shadow: 0 0 26px 4px color-mix(in srgb, var(--sky) 70%, transparent); opacity: .45;
+  animation: tryGlow 2.2s ease-in-out infinite; will-change: transform, opacity;
+}
+@keyframes tryGlow { 50% { opacity: .9; transform: scale(1.04); } }
+.nav-links a.nav-try { color: var(--emerald-ink); background: var(--emerald-soft); font-weight: 600; }
+.nav-try-mobile { display: none; }
 .btn-ghost { background: transparent; color: var(--text); box-shadow: inset 0 0 0 2px var(--line); }
 .btn-ghost:hover { box-shadow: inset 0 0 0 2px var(--sky); color: var(--sky-ink); }
 .btn span { transition: transform .35s var(--ease); }
@@ -378,6 +388,7 @@ textarea.input { resize: vertical; }
 @media (max-width: 860px) {
   .menu-btn { display: grid; }
   .nav-actions .btn { display: none; }
+  .nav-actions .nav-try-mobile { display: inline-flex; padding: 0 16px; }
   .nav-links {
     position: absolute; top: calc(100% + 10px); inset-inline: 0; flex-direction: column; padding: 12px; border-radius: var(--r);
     background: var(--card); box-shadow: var(--shadow-lg), inset 0 0 0 1px var(--line);
@@ -412,7 +423,9 @@ textarea.input { resize: vertical; }
   .hero-rotator { font-size: 1.15rem; }
   .lead { font-size: 1rem; }
   .hero-cta { margin-top: 22px; }
-  .hero-cta .btn { flex: 1; padding: 0 16px; }
+  .hero-cta { flex-direction: column; }
+  .hero-cta .btn { width: 100%; padding: 0 16px; }
+  .hero-cta .btn-try { min-height: 56px; font-size: 1.08rem; }
   .hero-visual { max-width: 300px; }
   .device { transform: none; padding: 10px; }
   .device-screen { padding: 12px; gap: 9px; }

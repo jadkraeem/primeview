@@ -41,7 +41,7 @@
   $('#resetBtn').addEventListener('click', function () {
     if (!confirm('مسح كل ما جرّبته والبدء ببيانات جديدة؟')) return;
     try {
-      localStorage.removeItem('pv-demo-db-v1');
+      ['pv-demo-db-v1', 'pv-demo-db-v2', 'pv-demo-guide'].forEach(function (k) { localStorage.removeItem(k); });
       Object.keys(localStorage).forEach(function (k) { if (k.indexOf('mrblack-cart-') === 0) localStorage.removeItem(k); });
     } catch (e) { /* تجاهل */ }
     try { new BroadcastChannel('pv-demo').postMessage({ kind: 'reset' }); } catch (e) { /* تجاهل */ }
