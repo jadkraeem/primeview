@@ -1,0 +1,48 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<!-- مولّد أيقونة التطبيق من شعار المقهى نفسه (نفس الخط والألوان والنص) -->
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800&family=Cairo:wght@600;700;800&family=Reem+Kufi:wght@600;700&family=Tajawal:wght@700;800&display=swap">
+<style>
+  * { margin: 0; box-sizing: border-box; }
+  html, body { overflow: hidden; background: transparent; }
+  .icon { position: relative; display: grid; place-items: center; overflow: hidden; }
+  .logo { text-align: center; line-height: 1; }
+  .line { display: block; white-space: nowrap; }
+  .sub { display: block; white-space: nowrap; }
+</style></head>
+<body>
+<div class="icon" id="icon"><div class="logo" id="logo"></div></div>
+<script>
+  // الإعدادات تأتي من الرابط: ?size=512&maskable=0&cfg=<JSON>
+  // cfg = { bg, bg2?, lines:[{text,color}], font, weight, sub, subFont, subColor, subWeight, subSpacing, scale? }
+  const p = new URLSearchParams(location.search);
+  const S = +p.get('size') || 512;
+  // maskable: 0 = زوايا مدوّرة (عادي) | 1 = مربع بهامش آمن (أندرويد يقصّ دائرة) | 2 = مربع بهامش عادي (آيفون يدوّر بنفسه)
+  const mode = p.get('maskable') || '0';
+  const maskable = mode === '1';
+  const c = JSON.parse(p.get('cfg'));
+  const icon = document.getElementById('icon');
+  icon.style.width = icon.style.height = S + 'px';
+  icon.style.borderRadius = mode === '0' ? (S * 0.22) + 'px' : '0';
+  icon.style.background = c.bg2 ? `radial-gradient(120% 120% at 30% 15%, ${c.bg2} 0%, ${c.bg} 62%)` : c.bg;
+
+  const logo = document.getElementById('logo');
+  // المنطقة الآمنة: الأيقونة القابلة للقص (أندرويد) تحتاج هامشاً أكبر
+  const box = S * (maskable ? 0.62 : 0.78) * (c.scale || 1);
+  logo.style.width = box + 'px';
+  logo.innerHTML = c.lines.map((l) => `<span class="line" style="color:${l.color};font-family:${c.font};font-weight:${c.weight || 700}">${l.text}</span>`).join('')
+    + (c.sub ? `<span class="sub" style="color:${c.subColor};font-family:${c.subFont};font-weight:${c.subWeight || 700};letter-spacing:${c.subSpacing || '.3em'}">${c.sub}</span>` : '');
+
+  // نكبّر كل سطر ليملأ عرض المنطقة الآمنة بالضبط، ثم نصغّر الكل إذا تجاوز الارتفاع
+  window.ready = document.fonts.ready.then(() => {
+    const fit = (el, target) => { el.style.fontSize = '100px'; el.style.fontSize = (100 * target / el.scrollWidth) + 'px'; };
+    const lines = [...logo.querySelectorAll('.line')];
+    const widest = Math.max(...lines.map((el) => { el.style.fontSize = '100px'; return el.scrollWidth; }));
+    lines.forEach((el) => { el.style.fontSize = (100 * box / widest) + 'px'; });   // نفس الحجم لكل الأسطر
+    const sub = logo.querySelector('.sub');
+    if (sub) { fit(sub, box * 0.92); sub.style.marginTop = (S * 0.035) + 'px'; }
+    const maxH = S * (maskable ? 0.6 : 0.72);
+    if (logo.scrollHeight > maxH) logo.style.transform = `scale(${maxH / logo.scrollHeight})`;
+  });
+</script>
+</body></html>

@@ -1,0 +1,15 @@
+{
+  "_source": "شعار Mr Black: .brand في css/theme.css (Playfair Display عريض، ذهبي) + small: COFFEE & LOUNGE (Cairo، حروف متباعدة، لون النص الكريمي) على #0f0f10",
+  "bg": "#0f0f10",
+  "bg2": "#1c1c1f",
+  "lines": [
+    { "text": "Mr Black", "color": "#d4af37" }
+  ],
+  "font": "'Playfair Display', serif",
+  "weight": 700,
+  "sub": "COFFEE & LOUNGE",
+  "subFont": "'Cairo', sans-serif",
+  "subColor": "#f3ead8",
+  "subWeight": 700,
+  "subSpacing": ".32em"
+}

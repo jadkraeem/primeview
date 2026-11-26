@@ -1,0 +1,16 @@
+{
+  "_source": "شعار رأس موقع Daily Dose: .logo في index.html (Playfair Display عريض، ذهبي) + small: CAFE & MORE (Cairo، حروف متباعدة) على #032e24",
+  "bg": "#032e24",
+  "bg2": "#064e3b",
+  "lines": [
+    { "text": "Daily", "color": "#c9a45c" },
+    { "text": "Dose", "color": "#c9a45c" }
+  ],
+  "font": "'Playfair Display', serif",
+  "weight": 700,
+  "sub": "CAFE & MORE",
+  "subFont": "'Cairo', sans-serif",
+  "subColor": "#c9a45c",
+  "subWeight": 700,
+  "subSpacing": ".32em"
+}
