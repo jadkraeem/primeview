@@ -41,6 +41,7 @@ const IMAGES = {
   'post-10': 'post-10-inventory',
   'post-11': 'post-11-nfc-loyalty',
   'post-12': 'post-12-why',
+  'post-13': 'post-13-cashier-guide',
   'story': 'story-try-demo',
 };
 const REELS = { 'reel-menu': 'reel-1-qr-menu', 'reel-system': 'reel-2-cashier-system', 'reel-themes': 'reel-3-day-night' };
