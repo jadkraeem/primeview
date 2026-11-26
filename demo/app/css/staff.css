@@ -1,0 +1,163 @@
+/* Mr Black — مشترك بين الكاشير والمطبخ */
+.topbar { position: sticky; top: 0; z-index: 50; background: color-mix(in srgb, var(--bg) 94%, transparent); backdrop-filter: blur(10px); border-bottom: 1px solid var(--line); }
+.topbar-in { display: flex; align-items: center; gap: 12px; padding: 10px 16px; flex-wrap: wrap; }
+.topbar .brand { font-size: 22px; }
+.topbar .spacer { flex: 1; }
+.user-chip { font-size: 13px; color: var(--muted); }
+.conn { width: 10px; height: 10px; border-radius: 50%; background: var(--muted); display: inline-block; }
+.conn.on { background: var(--ok); box-shadow: 0 0 0 3px var(--ok-soft); }
+.conn.off { background: var(--danger); }
+
+.tabs { display: flex; gap: 4px; overflow-x: auto; padding: 0 12px; scrollbar-width: none; border-top: 1px solid var(--line); }
+.tabs::-webkit-scrollbar { display: none; }
+.tab { padding: 11px 14px; background: none; border: 0; border-bottom: 2px solid transparent; color: var(--muted); cursor: pointer; white-space: nowrap; font-weight: 700; font-size: 14px; }
+.tab.on { color: var(--gold-2); border-bottom-color: var(--gold); }
+.tab .count { background: var(--gold); color: var(--on-gold); border-radius: 10px; padding: 0 7px; font-size: 12px; margin-inline-start: 4px; }
+
+.page { padding: 16px; max-width: 1400px; margin: auto; }
+.page-head { display: flex; justify-content: space-between; align-items: center; gap: 10px; margin-bottom: 14px; flex-wrap: wrap; }
+.page-head h2 { font-size: 20px; }
+
+/* بطاقات الطلبات */
+.orders-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(290px, 1fr)); gap: 12px; align-items: start; }
+.order { background: var(--card); border: 1px solid var(--line); border-radius: var(--r); overflow: hidden; display: flex; flex-direction: column; }
+.order-head { display: flex; justify-content: space-between; align-items: center; padding: 10px 14px; background: var(--card-2); border-bottom: 1px solid var(--line); gap: 8px; }
+.order-head b { font-size: 16px; }
+.order .timer { font-variant-numeric: tabular-nums; font-weight: 800; font-size: 15px; }
+.order.late { border-color: var(--danger); box-shadow: 0 0 0 1px var(--danger); }
+.order.late .order-head { background: var(--danger); color: #fff; }
+.order.warn .order-head { background: var(--warn-soft); }
+.order.is-new { animation: pulse 1.6s ease-in-out 3; }
+@keyframes pulse { 50% { box-shadow: 0 0 0 4px rgba(212, 175, 55, .45); } }
+.order-body { padding: 10px 14px; font-size: 15px; flex: 1; }
+.order-line { padding: 5px 0; border-bottom: 1px dashed var(--line); }
+.order-line:last-child { border-bottom: 0; }
+.order-line .q { font-weight: 800; color: var(--gold-2); margin-inline-end: 4px; }
+.order-line .note { display: block; color: #f2c76b; font-size: 13px; margin-top: 2px; }
+.order-foot { display: flex; gap: 8px; padding: 10px 14px; border-top: 1px solid var(--line); flex-wrap: wrap; align-items: center; }
+.order-foot .btn { flex: 1; }
+
+/* مساعد الذكاء الاصطناعي */
+.ai-fab { position: fixed; bottom: 18px; inset-inline-start: 18px; z-index: 80; width: 56px; height: 56px; border-radius: 50%; font-size: 22px; box-shadow: var(--shadow); }
+.ai-panel { position: fixed; bottom: 86px; inset-inline-start: 18px; z-index: 81; width: min(400px, calc(100vw - 36px)); height: min(560px, calc(100vh - 120px)); display: flex; flex-direction: column; background: var(--card); border: 1px solid var(--line); border-radius: var(--r); box-shadow: var(--shadow); }
+.ai-head { display: flex; justify-content: space-between; align-items: center; padding: 10px 14px; border-bottom: 1px solid var(--line); }
+.ai-msgs { flex: 1; overflow-y: auto; padding: 12px; display: flex; flex-direction: column; gap: 8px; }
+.ai-msg { padding: 9px 12px; border-radius: 12px; max-width: 88%; white-space: pre-wrap; word-wrap: break-word; font-size: 14px; line-height: 1.7; }
+.ai-msg.user { align-self: flex-start; background: var(--gold); color: var(--on-gold); }
+.ai-msg.assistant { align-self: flex-end; background: var(--card-2); border: 1px solid var(--line); }
+.ai-msg.error { align-self: center; background: var(--danger-soft); color: #f0a091; font-size: 13px; }
+.ai-form { display: flex; gap: 8px; padding: 10px; border-top: 1px solid var(--line); }
+.ai-form textarea { min-height: 42px; max-height: 120px; resize: none; }
+.ai-hint { font-size: 11px; color: var(--muted); padding: 0 12px 8px; }
+@media (max-width: 560px) {
+  .ai-panel { inset-inline: 8px; width: auto; bottom: 80px; height: calc(100vh - 100px); }
+}
+
+@media print {
+  .no-print, .topbar, .ai-fab, .ai-panel, #toasts { display: none !important; }
+  body { background: #fff; color: #000; }
+  .card, .table-wrap { border-color: #999; background: #fff; }
+  table.data th { background: #eee; color: #000; }
+  table.data th, table.data td { border-color: #bbb; color: #000; }
+  .page { padding: 0; }
+  .print-only { display: block !important; }
+}
+.print-only { display: none; }
+
+/* =========================================================
+   لوحة الكاشير: قائمة جانبية + حركات سلسة
+   ========================================================= */
+.shell { display: grid; grid-template-columns: 250px 1fr; min-height: 100vh; }
+.sidebar { position: sticky; top: 0; height: 100vh; overflow-y: auto; background: var(--bg-2); border-inline-end: 1px solid var(--line);
+  display: flex; flex-direction: column; z-index: 70; scrollbar-width: thin; }
+.side-brand { padding: 18px 16px 10px; text-align: center; }
+.side-nav { flex: 1; padding: 6px 10px 10px; }
+.side-group { margin-bottom: 12px; }
+.side-title { font-size: 11px; color: var(--muted); padding: 8px 10px 4px; font-weight: 700; letter-spacing: .5px; }
+.side-link { width: 100%; display: flex; align-items: center; gap: 10px; padding: 10px 12px; border: 0; border-radius: 12px; background: transparent;
+  color: var(--text); font-weight: 700; font-size: 14px; cursor: pointer; text-align: start; position: relative;
+  transition: background .25s, color .25s, transform .25s; }
+.side-link:hover { background: var(--card-2); transform: translateX(-3px); }
+.side-link.on { background: var(--gold); color: var(--on-gold); box-shadow: 0 6px 18px rgba(0,0,0,.15); }
+.side-ico { width: 24px; text-align: center; font-size: 17px; }
+.side-link .count { margin-inline-start: auto; background: var(--danger); color: #fff; border-radius: 10px; padding: 0 8px; font-size: 12px; animation: pop .3s; }
+.side-link.on .count { background: var(--on-gold); color: var(--gold); }
+@keyframes pop { from { transform: scale(.4); } }
+.side-user { display: flex; justify-content: space-between; align-items: center; gap: 8px; padding: 12px 14px; border-top: 1px solid var(--line); font-size: 13px; }
+.side-user small { display: block; color: var(--muted); }
+.main-area { min-width: 0; display: flex; flex-direction: column; }
+.top-title { font-size: 18px; font-family: var(--font); }
+.burger { display: none; width: 42px; padding: 0; font-size: 18px; }
+.shift-chip { font-size: 12px; font-weight: 700; padding: 5px 12px; border-radius: 20px; cursor: pointer; border: 1px solid var(--line); white-space: nowrap; }
+.shift-chip.open { color: var(--ok); border-color: var(--ok); background: var(--ok-soft); }
+.shift-chip.closed { color: var(--warn); border-color: var(--warn); background: var(--warn-soft); }
+.side-overlay { display: none; }
+
+/* حركة دخول القسم */
+.tab-anim { animation: tabIn .38s cubic-bezier(.2, .8, .2, 1) both; }
+@keyframes tabIn { from { opacity: 0; transform: translateY(14px) scale(.995); } to { opacity: 1; transform: none; } }
+.tab-anim .card, .tab-anim .kpi, .tab-anim .order, .tab-anim .qr-card, .tab-anim .pos-tile { animation: rise .45s cubic-bezier(.2, .8, .2, 1) both; }
+.tab-anim > * > :nth-child(2) { animation-delay: .03s; }
+.tab-anim > * > :nth-child(3) { animation-delay: .06s; }
+@keyframes rise { from { opacity: 0; transform: translateY(10px); } }
+.kpi, .order, .qr-card, .pos-tile, .quick { transition: transform .25s, box-shadow .25s, border-color .25s, background .25s; }
+.kpi:hover, .qr-card:hover { transform: translateY(-3px); box-shadow: var(--shadow); }
+
+@media (max-width: 980px) {
+  .shell { grid-template-columns: 1fr; }
+  .sidebar { position: fixed; inset-block: 0; inset-inline-start: 0; width: 270px; transform: translateX(110%); transition: transform .3s cubic-bezier(.2, .8, .2, 1); box-shadow: var(--shadow); }
+  body.side-open .sidebar { transform: none; }
+  body.side-open .side-overlay { display: block; position: fixed; inset: 0; background: rgba(0,0,0,.45); z-index: 65; animation: fade .2s; }
+  .burger { display: inline-flex; }
+  .topbar-in { gap: 8px; }
+  .top-title { font-size: 16px; }
+  .shift-chip { display: none; }
+}
+
+/* =========================================================
+   الرئيسية
+   ========================================================= */
+.quick-actions { display: grid; grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); gap: 10px; margin-bottom: 18px; }
+.quick { display: flex; align-items: center; gap: 10px; padding: 16px; border-radius: 16px; border: 1px solid var(--line); background: var(--card);
+  color: var(--text); cursor: pointer; font-weight: 800; font-size: 15px; text-align: start; }
+.quick:hover { border-color: var(--gold); transform: translateY(-3px); box-shadow: var(--shadow); }
+.quick span { font-size: 24px; }
+.kpi.ok b { color: var(--ok); } .kpi.danger b { color: var(--danger); } .kpi.warn b { color: var(--warn); }
+.mini-list { list-style: none; }
+.mini-list li { display: flex; justify-content: space-between; gap: 8px; padding: 8px 0; border-bottom: 1px dashed var(--line); font-size: 14px; }
+.mini-list li:last-child { border-bottom: 0; }
+
+/* =========================================================
+   نقطة البيع
+   ========================================================= */
+.pos { display: grid; grid-template-columns: 1fr 380px; gap: 16px; align-items: start; }
+.pos-tiles { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 10px; }
+.pos-tile { padding: 14px 10px; border-radius: 16px; border: 1px solid var(--line); background: var(--card); color: var(--text); cursor: pointer;
+  text-align: center; min-height: 92px; display: flex; flex-direction: column; justify-content: center; gap: 4px; font-family: inherit; position: relative; }
+.pos-tile:hover { border-color: var(--gold); transform: translateY(-2px); }
+.pos-tile:active { transform: scale(.97); }
+.pos-tile b { font-size: 15px; }
+.pos-tile small { color: var(--gold); font-weight: 800; }
+.pos-tile.sold { opacity: .45; cursor: not-allowed; }
+.pos-tile .in-cart { position: absolute; top: 6px; inset-inline-start: 6px; background: var(--gold); color: var(--on-gold); border-radius: 10px; font-size: 12px; padding: 0 7px; font-weight: 800; }
+.ticket { position: sticky; top: 76px; }
+.ticket-lines { max-height: 42vh; overflow-y: auto; margin: 10px 0; }
+.seg { display: inline-flex; background: var(--bg-2); border: 1px solid var(--line); border-radius: 30px; padding: 3px; gap: 3px; }
+.seg button { border: 0; background: transparent; color: var(--text); padding: 7px 14px; border-radius: 30px; cursor: pointer; font-weight: 700; font-family: inherit; transition: background .2s; }
+.seg button.on { background: var(--gold); color: var(--on-gold); }
+@media (max-width: 1100px) { .pos { grid-template-columns: 1fr; } .ticket { position: static; } }
+
+/* الدفع */
+.pay-total { text-align: center; font-size: 32px; font-weight: 800; color: var(--gold); margin: 4px 0 14px; }
+.pay-quick { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 8px; }
+.pay-change { text-align: center; padding: 12px; border-radius: 14px; background: var(--ok-soft); color: var(--ok); font-weight: 800; font-size: 20px; margin: 12px 0; }
+.pay-change.bad { background: var(--danger-soft); color: var(--danger); }
+.badge-paid { background: var(--ok-soft); color: var(--ok); border-color: var(--ok); }
+.badge-unpaid { background: var(--warn-soft); color: var(--warn); border-color: var(--warn); }
+
+/* إصلاحات العرض */
+.main-area > .page { width: 100%; }
+.order.late .order-head .badge, .order.late .order-head .muted { background: #fff; color: var(--danger); border-color: #fff; }
+.ai-fab { inset-inline-start: auto; inset-inline-end: 18px; }
+.ai-panel { inset-inline-start: auto; inset-inline-end: 18px; }
+@media (max-width: 560px) { .ai-panel { inset-inline: 8px; } }

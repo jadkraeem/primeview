@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>جرّب النظام | PrimeView</title>
+  <meta name="description" content="جرّب نظام الكافيه من PrimeView: منيو الزبون، المطبخ، والكاشير. نسخة تجريبية ببيانات وهمية.">
+  <meta name="theme-color" content="#f6efe3">
+  <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600&family=Readex+Pro:wght@500;600;700&display=swap">
+  <script src="../js/theme-init.js"></script>
+  <link rel="stylesheet" href="../css/site.css">
+  <link rel="stylesheet" href="demo.css">
+</head>
+<body class="demo-page">
+  <header class="nav">
+    <a class="logo" href="../" aria-label="PrimeView">
+      <span class="logo-mark" aria-hidden="true"><span></span></span>
+      <span class="logo-text">Prime<b>View</b></span>
+    </a>
+    <span class="demo-pill">🧪 تجربة مباشرة — بيانات وهمية</span>
+    <div class="nav-actions">
+      <button class="icon-btn" id="themeBtn" type="button" aria-label="تبديل الوضع النهاري والليلي"><span class="sun">☀️</span><span class="moon">🌙</span></button>
+      <a class="btn btn-primary btn-sm" href="../#contact">اطلب نظامك</a>
+    </div>
+  </header>
+
+  <main class="demo-main">
+    <section class="demo-intro wrap">
+      <p class="eyebrow reveal">جرّب بنفسك</p>
+      <h1 class="reveal">اطلب كزبون… وشوف الطلب يوصل للمطبخ بلحظته</h1>
+      <p class="lead reveal">هذه نسخة كاملة من نظام الكافيه الذي نبنيه لعملائنا. كل شيء يعمل فعلاً، لكن البيانات وهمية ومحفوظة على جهازك فقط، فجرّب بحرية.</p>
+      <ol class="steps-mini reveal">
+        <li><b>1</b> من جوال الزبون: أضف صنفاً للسلة وأرسل الطلب</li>
+        <li><b>2</b> بالمطبخ: اضغط "بدء التحضير" ثم "جاهز"</li>
+        <li><b>3</b> بالكاشير: حصّل ثمن الطلب وشوف التقارير</li>
+      </ol>
+    </section>
+
+    <!-- الكمبيوتر: الثلاث شاشات جنباً إلى جنب -->
+    <section class="live wrap reveal" aria-label="التجربة الحيّة">
+      <div class="live-phone">
+        <div class="live-label">📱 جوال الزبون — طاولة 5</div>
+        <div class="phone-frame"><iframe title="منيو الزبون" src="app/index.html?table=5" loading="lazy"></iframe></div>
+      </div>
+      <div class="live-staff">
+        <div class="live-tabs" role="tablist">
+          <button type="button" role="tab" class="is-on" data-view="kitchen" aria-selected="true">👨‍🍳 شاشة المطبخ</button>
+          <button type="button" role="tab" data-view="casher" aria-selected="false">💵 الكاشير والإدارة</button>
+          <span class="tabs-pill" aria-hidden="true"></span>
+        </div>
+        <div class="screen-frame">
+          <div class="screen-bar"><i></i><i></i><i></i><span id="screenUrl">المطبخ</span>
+            <a id="openFull" href="app/kitchen.html?as=kitchen" target="_blank" rel="noopener">فتح بشاشة كاملة ↗</a></div>
+          <iframe class="view is-on" data-view="kitchen" title="شاشة المطبخ" src="app/kitchen.html?as=kitchen" loading="lazy"></iframe>
+          <iframe class="view" data-view="casher" title="الكاشير والإدارة" data-src="app/casher.html?as=manager#orders"></iframe>
+        </div>
+      </div>
+    </section>
+
+    <!-- الجوال والتابلت: أزرار تفتح كل شاشة -->
+    <section class="pick wrap" aria-label="اختر الشاشة">
+      <a class="pick-card card reveal" href="app/index.html?table=5">
+        <span class="pick-icon">📱</span><b>منيو الزبون</b><small>كأنك جالس على طاولة 5 ومسحت رمز QR</small>
+      </a>
+      <a class="pick-card card reveal" href="app/kitchen.html?as=kitchen">
+        <span class="pick-icon">👨‍🍳</span><b>شاشة المطبخ</b><small>الطلبات الجديدة تظهر مع تنبيه صوتي</small>
+      </a>
+      <a class="pick-card card reveal" href="app/casher.html?as=manager">
+        <span class="pick-icon">💵</span><b>الكاشير والإدارة</b><small>نقطة بيع، ورديات، مخزون، تقارير وأرباح</small>
+      </a>
+      <p class="pick-tip muted">💡 افتح المنيو بتبويب والمطبخ بتبويب ثانٍ بنفس المتصفح، واطلب من المنيو: الطلب يظهر بالمطبخ فوراً.</p>
+    </section>
+
+    <section class="demo-foot wrap reveal">
+      <div class="foot-box">
+        <div>
+          <h2>عجبك؟ هذا النظام ممكن يكون لمقهاك خلال أيام</h2>
+          <p class="muted">بشعارك وألوانك وأصنافك. حسابات تجريبية للدخول: مدير، كاشير، مطبخ (كلمة السر <b dir="ltr">demo1234</b>).</p>
+        </div>
+        <div class="foot-actions">
+          <a class="btn btn-primary" href="../#pricing">شوف الباقات</a>
+          <button class="btn btn-ghost" type="button" id="resetBtn">↺ ابدأ التجربة من جديد</button>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script src="demo.js"></script>
+</body>
+</html>

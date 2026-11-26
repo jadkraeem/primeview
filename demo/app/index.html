@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#0b0b0c">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' https: data:; connect-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%E2%98%95%3C/text%3E%3C/svg%3E">
+  <meta name="robots" content="noindex">
+  <title>تجربة | Mr Black — المنيو</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&family=Playfair+Display:wght@600;700&display=swap">
+  <script src="js/theme-init.js"></script>
+  <link rel="stylesheet" href="css/theme.css">
+  <link rel="stylesheet" href="css/menu.css">
+</head>
+<body>
+  <!-- شاشة الرفض عند تفعيل قفل الواي فاي -->
+  <div id="denied" class="hidden" role="alert">
+    <div>
+      <div class="brand denied-logo">Mr Black<small>COFFEE & LOUNGE</small></div>
+      <h2>عذراً! ✋</h2>
+      <p>عذراً، المنيو لا يفتح إلا بالاتصال عبر شبكة الكافتيريا، وإطفاء الـ VPN إن كان مفعّلاً.</p>
+      <button class="btn btn-gold" id="denied-retry" type="button">إعادة المحاولة</button>
+    </div>
+  </div>
+
+  <header class="m-header">
+    <a class="brand" href="#top">Mr Black<small>COFFEE & LOUNGE</small></a>
+    <nav class="m-nav" aria-label="روابط الصفحة">
+      <a href="#top">الرئيسية</a>
+      <a href="#menu">المنيو</a>
+      <a href="#news">العروض والفعاليات</a>
+      <a href="#contact">تواصل معنا</a>
+    </nav>
+    <div class="m-actions">
+      <span class="table-pill hidden" id="table-label"></span>
+      <button class="m-cart-btn m-theme" data-theme-btn type="button" aria-label="تبديل الوضع">☀️</button>
+      <button class="m-cart-btn cart-top" id="cart-btn-top" type="button" aria-label="السلة">🛒<span id="cart-count-top" class="cart-badge num">0</span><span id="cart-total-top" class="num cart-total-top"></span></button>
+    </div>
+  </header>
+
+  <main id="top">
+    <section class="hero">
+      <div class="hero-content">
+        <span class="eyebrow">DARK ROAST • BRIGHT MOOD</span>
+        <h1>Mr <span>Black</span></h1>
+        <h2 id="tagline">أكثر من مجرد قهوة..</h2>
+        <p>قهوة مختصة، أجواء هادئة، وتجربة تستحق العودة.</p>
+        <a href="#menu" class="main-btn">اطلب الآن ←</a>
+      </div>
+    </section>
+
+    <div class="info-boxes" id="news">
+      <button class="info-box" id="offers-box" type="button">
+        <h3>🏷️ عروض Mr Black</h3>
+        <div class="marquee"><div class="marquee-content" id="offers-marquee">جارٍ التحميل…</div></div>
+        <small class="info-more">اضغط لعرض كل العروض</small>
+      </button>
+      <button class="info-box" id="events-box" type="button">
+        <h3>🎉 الفعاليات</h3>
+        <div class="marquee"><div class="marquee-content" id="events-marquee">جارٍ التحميل…</div></div>
+        <small class="info-more">اضغط لعرض كل الفعاليات</small>
+      </button>
+    </div>
+
+    <section class="cats-section">
+      <div class="section-heading">
+        <span>EXPLORE OUR MENU</span>
+        <h2>اكتشف قائمتنا</h2>
+      </div>
+      <div class="categories" id="chips" aria-label="أقسام المنيو"></div>
+    </section>
+
+    <section class="menu-section" id="menu" aria-live="polite">
+      <div class="products" id="app">
+        <div class="state" style="grid-column:1/-1"><div class="spinner"></div>جارٍ تحميل المنيو…</div>
+      </div>
+    </section>
+
+    <section class="features">
+      <div class="feature"><div class="symbol">☕</div><h3>قهوة مختصة</h3><p>حبوب مختارة ومحمّصة بعناية.</p></div>
+      <div class="feature"><div class="symbol">⏱</div><h3>طلب سريع</h3><p>اطلب من طاولتك ويصلك طلبك بسرعة.</p></div>
+      <div class="feature"><div class="symbol">✦</div><h3>أجواء مميزة</h3><p>مكان هادئ للعمل واللقاءات والسهر.</p></div>
+    </section>
+  </main>
+
+  <footer id="contact">
+    <div class="brand">Mr Black<small>COFFEE & LOUNGE</small></div>
+    <p id="f-address"></p>
+    <p id="f-phone"></p>
+    <p id="f-hours"></p>
+    <p class="f-copy">© Mr Black</p>
+  </footer>
+
+
+  <script src="vendor/demo-backend.js"></script>
+  <script type="module" src="js/menu.js"></script>
+</body>
+</html>

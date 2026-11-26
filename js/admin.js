@@ -49,7 +49,7 @@ const SECTIONS = [
       F('text', 'الوصف', 'textarea', { wide: true }),
       F('media', 'الفيديو أو الصورة', 'media', { wide: true, accept: 'video/mp4,video/webm,image/*' }),
       F('poster', 'صورة الغلاف (تظهر قبل تشغيل الفيديو)', 'media', { wide: true, accept: 'image/*' }),
-      F('link', 'رابط التجربة (اختياري)', 'url', { wide: true }),
+      F('link', 'رابط التجربة (اختياري)', 'url', { wide: true, hint: 'اكتب demo/ لفتح النسخة التجريبية من نظام الكافيه' }),
     ] }],
   },
   {
@@ -278,7 +278,7 @@ function validate() {
   const bad = [];
   const isLink = (u) => !u || /^https:\/\//.test(u);
   (state.work || []).forEach((w, i) => {
-    ['media', 'poster', 'link'].forEach((k) => { if (!isLink(w[k]) && !/^assets\//.test(w[k])) bad.push(`أعمالنا ${i + 1}: الرابط يجب أن يبدأ بـ https://`); });
+    ['media', 'poster', 'link'].forEach((k) => { if (!isLink(w[k]) && !/^(assets|demo)\//.test(w[k])) bad.push(`أعمالنا ${i + 1}: الرابط يجب أن يبدأ بـ https://`); });
   });
   Object.entries(state.contact?.social || {}).forEach(([k, u]) => { if (!isLink(u)) bad.push(`رابط ${k} يجب أن يبدأ بـ https://`); });
   (state.contact?.phones || []).forEach((p, i) => { if (p.number && String(p.number).replace(/\D/g, '').length < 7) bad.push(`الرقم ${i + 1} قصير جداً`); });

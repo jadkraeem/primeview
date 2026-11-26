@@ -9,6 +9,7 @@ Website of PrimeView, our website and app design company (global-company standar
 ## Stack
 - Static site, no build step: [index.html](index.html), [css/site.css](css/site.css), [js/site.js](js/site.js).
 - All content (services, prices, phones, work, testimonials) lives in one object: [js/content.js](js/content.js). Phase 2 loads it from Supabase (`pv_` tables in the Mr Black project) and keeps content.js as fallback.
+- Live demo of the cafe system: [demo/](demo/) (landing page) + [demo/app/](demo/app/) (copy of Mr Black's pages). The copy is made by `node tools/demo/sync.js` from Desktop/cafeteria; never edit demo/app/js or css by hand, re-run sync instead. The only demo-specific file is [demo/app/vendor/demo-backend.js](demo/app/vendor/demo-backend.js): a fake in-browser Supabase (localStorage + BroadcastChannel) that ports the SQL functions/RLS. When Mr Black adds an RPC or table, port it there too. Demo accounts manager/cashier/kitchen@demo.cafe, password demo1234; `?as=manager` auto-logs in.
 - Work videos are made by [tools/video/](tools/video/) from test-account screenshots only (never real client data).
 - Escape every value with `esc()` before inserting HTML; links go through `safeHref()`.
 

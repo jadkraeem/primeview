@@ -35,7 +35,7 @@ export const DEFAULT_CONTENT = {
       text: 'منيو للزبائن عبر QR، كاشير ومحاسبة كاملة، شاشة مطبخ، ومساعد ذكاء اصطناعي للموظفين.',
       media: 'assets/work/mrblack-menu.mp4',
       poster: 'assets/work/mrblack-menu.jpg',
-      link: 'https://jadkraeem.github.io/mr-black-cafe/',
+      link: 'demo/',
     },
     {
       title: 'لوحة الكاشير والمحاسبة',
@@ -43,7 +43,7 @@ export const DEFAULT_CONTENT = {
       text: 'نقطة بيع، ورديات وصندوق، مصاريف وأرباح، تقارير وجرد، بالوضع النهاري والليلي.',
       media: 'assets/work/mrblack-casher.mp4',
       poster: 'assets/work/mrblack-casher.jpg',
-      link: '',
+      link: 'demo/',
     },
     {
       title: 'نهاري وليلي بلمسة',

@@ -12,7 +12,7 @@ const finePointer = matchMedia('(hover: hover) and (pointer: fine)').matches;
 // الحماية من XSS: كل نص يمرّ عبر esc قبل وضعه في الصفحة
 const ESC = { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' };
 const esc = (v) => String(v ?? '').replace(/[&<>"']/g, (c) => ESC[c]);
-const safeHref = (u) => (/^(https:\/\/|assets\/)/.test(String(u || '')) ? String(u) : '');
+const safeHref = (u) => (/^(https:\/\/|assets\/|demo\/)/.test(String(u || '')) ? String(u) : '');
 const digits = (n) => String(n || '').replace(/[^\d]/g, '');
 
 // المحتوى من صفحة الإعدادات، وإذا تعذّر الاتصال نستعمل content.js
@@ -55,7 +55,7 @@ function render(c) {
         <span class="work-tag">${esc(w.tag)}</span>
         <h3>${esc(w.title)}</h3>
         <p>${esc(w.text)}</p>
-        ${link ? `<a class="btn btn-ghost magnetic" href="${esc(link)}" target="_blank" rel="noopener">جرّب النظام مباشرة <span aria-hidden="true">←</span></a>` : ''}
+        ${link ? `<a class="btn btn-ghost magnetic" href="${esc(link)}" ${link.startsWith('demo/') ? '' : 'target="_blank" rel="noopener"'}>جرّب النظام مباشرة <span aria-hidden="true">←</span></a>` : ''}
       </div>
     </article>`;
   }).join('');
@@ -238,7 +238,7 @@ function tiltAndGlow() {
 
 function scrollEffects() {
   const bar = $('.progress'), nav = $('.nav');
-  const links = $$('.nav-links a');
+  const links = $$('.nav-links a[href^="#"]');
   const sections = links.map((a) => $(a.getAttribute('href'))).filter(Boolean);
   let lastY = scrollY, ticking = false;
   const update = () => {

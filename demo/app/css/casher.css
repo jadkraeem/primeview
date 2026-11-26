@@ -1,0 +1,52 @@
+/* Mr Black — لوحة الكاشير والإدارة */
+.kpis { display: grid; grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); gap: 10px; margin-bottom: 16px; }
+.kpi { background: var(--card); border: 1px solid var(--line); border-radius: var(--r); padding: 14px; }
+.kpi small { color: var(--muted); display: block; font-size: 12px; }
+.kpi b { font-size: 22px; font-variant-numeric: tabular-nums; }
+.kpi.gold b { color: var(--gold-2); }
+
+.section { margin-bottom: 22px; }
+.section > h3 { font-size: 16px; margin-bottom: 10px; color: var(--gold-2); }
+.cols-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+@media (max-width: 900px) { .cols-2 { grid-template-columns: 1fr; } }
+
+.bar-cell { position: relative; min-width: 120px; }
+.bar { height: 8px; border-radius: 4px; background: var(--gold); opacity: .85; }
+.bar-track { background: var(--card-2); border-radius: 4px; overflow: hidden; }
+
+.filters { display: flex; gap: 6px; flex-wrap: wrap; align-items: center; margin-bottom: 14px; }
+.filters .btn.on { background: var(--gold); color: var(--on-gold); border-color: var(--gold); }
+.filters input[type=date] { width: auto; min-height: 38px; }
+
+.switch { position: relative; width: 44px; height: 24px; display: inline-block; flex-shrink: 0; }
+.switch input { opacity: 0; width: 0; height: 0; }
+.switch span { position: absolute; inset: 0; background: var(--card-2); border: 1px solid var(--line); border-radius: 20px; cursor: pointer; transition: .15s; }
+.switch span::before { content: ""; position: absolute; width: 18px; height: 18px; top: 2px; inset-inline-start: 2px; background: var(--muted); border-radius: 50%; transition: .15s; }
+.switch input:checked + span { background: var(--ok-soft); border-color: var(--ok); }
+.switch input:checked + span::before { background: var(--ok); transform: translateX(-20px); }
+.switch input:disabled + span { opacity: .5; cursor: not-allowed; }
+
+.qr-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 12px; }
+.qr-card { text-align: center; }
+.qr-card svg { width: 100%; height: auto; background: #fff; border-radius: 8px; }
+.qr-box { background: #fff; padding: 10px; border-radius: 10px; max-width: 260px; margin: 0 auto 12px; }
+.qr-box svg { width: 100%; height: auto; display: block; }
+
+.cat-list { display: flex; gap: 8px; flex-wrap: wrap; }
+.cat-pill { display: inline-flex; gap: 6px; align-items: center; padding: 6px 6px 6px 12px; border-radius: 20px; background: var(--card); border: 1px solid var(--line); }
+.cat-pill.off { opacity: .5; }
+
+/* الطباعة: إيصال/رموز QR */
+#print-area { display: none; }
+@media print {
+  body.printing > *:not(#print-area) { display: none !important; }
+  body.printing #print-area { display: block !important; color: #000; }
+  #print-area .receipt { width: 72mm; margin: 0 auto; font-size: 12px; }
+  #print-area .receipt h2 { text-align: center; font-size: 18px; }
+  #print-area .receipt .r-line { display: flex; justify-content: space-between; gap: 6px; padding: 2px 0; }
+  #print-area .receipt hr { border: 0; border-top: 1px dashed #000; margin: 6px 0; }
+  #print-area .qr-print { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10mm; }
+  #print-area .qr-print div { text-align: center; page-break-inside: avoid; border: 1px solid #000; padding: 4mm; border-radius: 3mm; }
+  #print-area .qr-print svg { width: 100%; height: auto; }
+  #print-area .qr-print b { display: block; font-size: 16px; margin-top: 2mm; }
+}

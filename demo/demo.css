@@ -1,0 +1,56 @@
+/* PrimeView — صفحة التجربة (تعتمد على متغيرات site.css) */
+.demo-page { background: var(--bg); }
+.demo-pill { font-size: .85rem; font-weight: 600; color: var(--emerald-ink); background: var(--emerald-soft); padding: 6px 14px; border-radius: var(--pill); white-space: nowrap; }
+.demo-main { padding-top: 110px; }
+
+.demo-intro { text-align: center; max-width: 860px; }
+.demo-intro h1 { font-size: clamp(1.8rem, 4.4vw, 3rem); margin-bottom: 14px; }
+.demo-intro .lead { margin-inline: auto; }
+.steps-mini { list-style: none; display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin: 26px 0 34px; }
+.steps-mini li { display: flex; align-items: center; gap: 10px; padding: 9px 16px 9px 10px; border-radius: var(--pill); background: var(--card); box-shadow: inset 0 0 0 1px var(--line); font-weight: 500; font-size: .95rem; }
+.steps-mini b { width: 28px; height: 28px; border-radius: 50%; display: grid; place-items: center; background: var(--grad); color: var(--on-grad); font-family: var(--font-head); }
+
+/* ---------- العرض الحي (كمبيوتر) ---------- */
+.live { display: grid; grid-template-columns: 380px 1fr; gap: 26px; align-items: start; }
+.live-label { font-family: var(--font-head); font-weight: 600; margin-bottom: 10px; text-align: center; }
+.phone-frame { position: relative; height: 760px; border-radius: 46px; padding: 12px; background: #1b2b2c; box-shadow: var(--shadow-lg); }
+.phone-frame::before { content: ''; position: absolute; top: 20px; left: 50%; width: 96px; height: 24px; margin-left: -48px; border-radius: 14px; background: #1b2b2c; z-index: 2; }
+.phone-frame iframe { width: 100%; height: 100%; border: 0; border-radius: 35px; background: #fff; }
+.live-staff { min-width: 0; }
+.live-tabs { position: relative; display: inline-flex; padding: 5px; margin-bottom: 10px; border-radius: var(--pill); background: var(--card); box-shadow: inset 0 0 0 1px var(--line); }
+.live-tabs button { position: relative; z-index: 1; border: 0; background: none; cursor: pointer; padding: 9px 20px; border-radius: var(--pill); font-weight: 600; color: var(--muted); transition: color .4s; }
+.live-tabs button.is-on { color: var(--on-grad); }
+.tabs-pill { position: absolute; top: 5px; bottom: 5px; border-radius: var(--pill); background: var(--grad); transition: inset .5s var(--ease), width .5s var(--ease); }
+.screen-frame { position: relative; height: 760px; display: flex; flex-direction: column; border-radius: 20px; padding: 10px; background: var(--card); box-shadow: var(--shadow-lg), inset 0 0 0 1px var(--line); }
+.screen-bar { display: flex; align-items: center; gap: 7px; padding: 2px 6px 10px; direction: ltr; font-size: .85rem; color: var(--muted); }
+.screen-bar i { width: 11px; height: 11px; border-radius: 50%; background: var(--line); }
+.screen-bar i:nth-child(1) { background: #ef8f7d; } .screen-bar i:nth-child(2) { background: #f0c869; } .screen-bar i:nth-child(3) { background: var(--emerald); }
+.screen-bar span { margin-left: 10px; direction: rtl; }
+.screen-bar a { margin-left: auto; color: var(--sky-ink); font-weight: 600; direction: rtl; }
+.screen-frame .view { display: none; flex: 1; width: 100%; border: 0; border-radius: 12px; background: #fff; }
+.screen-frame .view.is-on { display: block; animation: fadeView .5s var(--ease); }
+@keyframes fadeView { from { opacity: 0; transform: translateY(10px); } }
+
+/* ---------- اختيار الشاشة (جوال) ---------- */
+.pick { display: none; gap: 14px; }
+.pick-card { display: grid; gap: 4px; text-align: center; padding: 26px 20px; }
+.pick-icon { font-size: 2.2rem; }
+.pick-card b { font-family: var(--font-head); font-size: 1.2rem; }
+.pick-card small { color: var(--muted); }
+.pick-tip { text-align: center; font-size: .92rem; }
+
+/* ---------- الخاتمة ---------- */
+.demo-foot { padding-block: 60px 90px; }
+.foot-box { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 22px; padding: 30px; border-radius: var(--r); background: var(--card); box-shadow: var(--shadow), inset 0 0 0 1px var(--line); }
+.foot-box h2 { font-size: clamp(1.3rem, 2.6vw, 1.8rem); margin-bottom: 6px; }
+.foot-actions { display: flex; flex-wrap: wrap; gap: 10px; }
+
+@media (max-width: 1080px) {
+  .live { display: none; }
+  .pick { display: grid; }
+}
+@media (max-width: 640px) {
+  .demo-pill { display: none; }
+  .steps-mini { flex-direction: column; align-items: stretch; }
+  .foot-actions .btn { flex: 1; }
+}
