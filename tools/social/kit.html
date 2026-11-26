@@ -82,13 +82,15 @@ const T = {
         <div style="justify-self:center">${mark(400)}</div>
         <div class="word" style="font-size:132px;text-align:center">Prime<b>View</b></div></div>` },
 
+  // الأطراف تُقصّ على الجوال، فكل المحتوى المهم في المنتصف الآمن (≈820px)
   'fb-cover': { w: 1640, h: 624, html: () => `${bg()}
-      <div class="abs" style="left:50%;top:50%;transform:translate(-50%,-50%);width:1000px;text-align:center">
-        <div class="h" style="font-size:72px">نصمّم حضورك الرقمي <span class="g">بمعايير عالمية</span></div>
-        <div class="muted" style="font-size:34px;margin-top:18px">مواقع • تطبيقات • أنظمة ذكية للمطاعم والمقاهي</div>
-        <div class="url" style="margin-top:26px">${SITE}</div></div>
-      ${phone('ph-menu-light.jpg', 1330, 120, 200, -8, 'opacity:.95')}
-      ${phone('ph-hero-dark.jpg', 90, 150, 190, 7, 'opacity:.95')}` },
+      <div class="abs" style="left:50%;top:50%;transform:translate(-50%,-50%);width:820px;text-align:center">
+        <div style="display:flex;justify-content:center;margin-bottom:20px">${logo(46)}</div>
+        <div class="h" style="font-size:58px;line-height:1.22">نصمّم حضورك الرقمي <span class="g">بمعايير عالمية</span></div>
+        <div class="muted" style="font-size:29px;margin-top:14px">مواقع • تطبيقات • أنظمة ذكية للمطاعم والمقاهي</div>
+        <div class="url" style="margin-top:18px">${SITE}</div></div>
+      ${phone('ph-menu-light.jpg', 1370, 120, 195, -8, 'opacity:.85')}
+      ${phone('ph-hero-dark.jpg', 75, 150, 185, 7, 'opacity:.85')}` },
 
   og: { w: 1200, h: 630, html: () => `${bg()}
       <div class="abs" style="right:70px;top:90px;width:600px">

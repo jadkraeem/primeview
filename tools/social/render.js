@@ -49,10 +49,12 @@ fs.mkdirSync(OUT, { recursive: true });
   const p = await b.newPage();
   p.on('pageerror', (e) => console.log('PAGEERR', e.message));
   await p.evaluateOnNewDocument((plans) => { window.PLANS = plans; }, PLANS);
-  const open = async (t) => {
+  // دقة عالية جداً: 2x لكل الصور (ملفات حادة للطباعة والشاشات الكبيرة)
+  const SCALE = Number(process.env.SCALE || 2);
+  const open = async (t, scale = SCALE) => {
     await p.goto(`${KIT}?t=${t}`, { waitUntil: 'networkidle0' });
     const k = await p.evaluate(() => window.KIT);
-    await p.setViewport({ width: k.w, height: k.h, deviceScaleFactor: 1 });
+    await p.setViewport({ width: k.w, height: k.h, deviceScaleFactor: scale });
     await p.evaluate(() => window.ready);
     return k;
   };
@@ -69,7 +71,7 @@ fs.mkdirSync(OUT, { recursive: true });
   if (mode === 'reels' || mode === 'all') {
     for (const [t, name] of Object.entries(REELS)) {
       if (only && !only.includes(t)) continue;
-      const k = await open(t);
+      const k = await open(t, 1);  // الفيديو بدقة 1080 القياسية (إنستغرام يحددها)
       const ff = spawn(ffmpeg, ['-y', '-loglevel', 'error', '-f', 'image2pipe', '-framerate', '30', '-i', '-',
         '-c:v', 'libx264', '-pix_fmt', 'yuv420p', '-crf', '22', '-preset', 'slow', '-movflags', '+faststart', '-an', `${OUT}/${name}.mp4`]);
       ff.stderr.on('data', (d) => process.stderr.write(d));
