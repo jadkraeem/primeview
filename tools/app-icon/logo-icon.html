@@ -27,6 +27,15 @@
   icon.style.background = c.bg2 ? `radial-gradient(120% 120% at 30% 15%, ${c.bg2} 0%, ${c.bg} 62%)` : c.bg;
 
   const logo = document.getElementById('logo');
+
+  // نوع "علامة": شعار رمزي (مثل علامة PrimeView: خلفية متدرّجة + دائرة + نقطة)
+  if (c.type === 'mark') {
+    icon.style.background = c.grad;
+    const d = S * (maskable ? 0.36 : 0.41);
+    logo.innerHTML = `<span style="display:grid;place-items:center;width:${d}px;height:${d}px;border-radius:50%;background:${c.ring};box-shadow:0 0 0 ${S * 0.043}px ${c.halo}">
+      <span style="width:${d * 0.386}px;height:${d * 0.386}px;border-radius:50%;background:${c.dot}"></span></span>`;
+    window.ready = Promise.resolve();
+  } else {
   // المنطقة الآمنة: الأيقونة القابلة للقص (أندرويد) تحتاج هامشاً أكبر
   const box = S * (maskable ? 0.62 : 0.78) * (c.scale || 1);
   logo.style.width = box + 'px';
@@ -44,5 +53,6 @@
     const maxH = S * (maskable ? 0.6 : 0.72);
     if (logo.scrollHeight > maxH) logo.style.transform = `scale(${maxH / logo.scrollHeight})`;
   });
+  }
 </script>
 </body></html>
