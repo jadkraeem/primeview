@@ -1,0 +1,265 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@500;600&family=Readex+Pro:wght@500;600;700&display=swap">
+<style>
+  :root { --bg:#f6efe3; --bg2:#efe4d1; --card:#fffaf2; --line:#e3d6bf; --text:#1b2b2c; --muted:#66675c; --sky:#5bbfe9; --em:#0e9f6e; --emi:#0a7552;
+          --grad:linear-gradient(120deg,#0e9f6e 0%,#2bb3a3 50%,#5bbfe9 100%); }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { overflow: hidden; }
+  body { font-family: 'IBM Plex Sans Arabic', sans-serif; background: var(--bg); color: var(--text); }
+  .s { position: relative; overflow: hidden; background: var(--bg); }
+  .dark { background: #0c1719; color: #f3eadb; }
+  .blob { position: absolute; border-radius: 50%; filter: blur(80px); }
+  .grid { position: absolute; inset: 0; opacity: .45; background-image: linear-gradient(var(--line) 1px, transparent 1px), linear-gradient(90deg, var(--line) 1px, transparent 1px);
+          background-size: 56px 56px; -webkit-mask-image: radial-gradient(ellipse 75% 70% at 50% 45%, #000 15%, transparent 75%); }
+  .dark .grid { background-image: linear-gradient(#21393d 1px, transparent 1px), linear-gradient(90deg, #21393d 1px, transparent 1px); }
+  .abs { position: absolute; }
+  .h { font-family: 'Readex Pro', sans-serif; font-weight: 700; line-height: 1.22; }
+  .g { background: var(--grad); -webkit-background-clip: text; color: transparent; }
+  .eyebrow { display: inline-block; font: 600 30px 'Readex Pro'; color: var(--emi); background: rgba(14,159,110,.13); padding: 10px 28px; border-radius: 99px; }
+  .muted { color: var(--muted); }
+  .mark { border-radius: 28%; background: var(--grad); display: grid; place-items: center; box-shadow: 0 30px 60px -25px rgba(14,159,110,.6); }
+  .mark i { display: block; border-radius: 50%; background: var(--bg); }
+  .mark i::after { content: ''; display: block; width: 38%; height: 38%; margin: 31%; border-radius: 50%; background: var(--em); }
+  .word { font: 700 1em 'Readex Pro'; direction: ltr; letter-spacing: .5px; }
+  .word b { background: var(--grad); -webkit-background-clip: text; color: transparent; }
+  .chip { display: inline-flex; align-items: center; gap: 12px; padding: 16px 30px; border-radius: 99px; background: var(--card); font: 600 30px 'Readex Pro';
+          box-shadow: 0 20px 40px -16px rgba(40,60,50,.35), inset 0 0 0 2px var(--line); white-space: nowrap; }
+  .chip .d { width: 16px; height: 16px; border-radius: 50%; background: var(--grad); }
+  .btn { display: inline-flex; align-items: center; gap: 14px; padding: 24px 46px; border-radius: 99px; background: var(--grad); color: #fff; font: 700 36px 'Readex Pro';
+         box-shadow: 0 24px 50px -18px rgba(14,159,110,.7); }
+  .url { direction: ltr; font: 600 30px 'Readex Pro'; color: var(--muted); }
+  .phone { position: absolute; border-radius: 64px; background: #1b2b2c; padding: 16px; box-shadow: 0 50px 90px -30px rgba(20,40,35,.55); }
+  .phone .vp { width: 100%; height: 100%; border-radius: 50px; overflow: hidden; position: relative; background: #efe4d1; }
+  .phone .notch { position: absolute; top: 26px; left: 50%; width: 130px; height: 32px; margin-left: -65px; border-radius: 18px; background: #1b2b2c; z-index: 3; }
+  .browser { position: absolute; border-radius: 28px; background: var(--card); padding: 18px; box-shadow: 0 50px 90px -30px rgba(40,60,50,.45), inset 0 0 0 2px var(--line); }
+  .browser .bar { display: flex; gap: 10px; height: 26px; margin-bottom: 14px; direction: ltr; }
+  .browser .bar i { width: 16px; height: 16px; border-radius: 50%; }
+  .browser .bar i:nth-child(1) { background: #ef8f7d; } .browser .bar i:nth-child(2) { background: #f0c869; } .browser .bar i:nth-child(3) { background: var(--em); }
+  .browser .vp { border-radius: 14px; overflow: hidden; position: relative; background: #efe4d1; }
+  .shot { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: top center; }
+  .card { background: var(--card); border-radius: 36px; box-shadow: 0 24px 50px -24px rgba(40,60,50,.35), inset 0 0 0 2px var(--line); }
+  .foot { position: absolute; left: 70px; right: 70px; bottom: 60px; display: flex; align-items: center; justify-content: space-between; }
+  .logo-row { display: flex; align-items: center; gap: 16px; font-size: 40px; }
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script>
+const A = 'file:///C:/Users/acer/Desktop/MrBlack-Video/assets/';
+const SITE = 'jadkraeem.github.io/primeview';
+const $ = (s) => document.querySelector(s);
+const clamp = (x) => Math.max(0, Math.min(1, x));
+const seg = (t, a, b) => clamp((t - a) / (b - a));
+const ease = (x) => 1 - Math.pow(1 - x, 3);
+const easeIO = (x) => (x < .5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2);
+
+const bg = (dark) => `
+  <div class="blob" style="width:60%;height:50%;background:#5bbfe9;opacity:${dark ? .25 : .45};top:-15%;right:-15%"></div>
+  <div class="blob" style="width:55%;height:45%;background:#0e9f6e;opacity:${dark ? .3 : .22};bottom:-18%;left:-5%"></div>
+  <div class="blob" style="width:40%;height:35%;background:#e9cf9f;opacity:${dark ? .08 : .55};top:38%;left:-15%"></div>
+  <div class="grid"></div>`;
+const mark = (size) => `<span class="mark" style="width:${size}px;height:${size}px"><i style="width:${size * .44}px;height:${size * .44}px"></i></span>`;
+const logo = (fs = 40) => `<div class="logo-row" style="font-size:${fs}px">${mark(fs * 1.4)}<span class="word">Prime<b>View</b></span></div>`;
+const foot = (txt = SITE) => `<div class="foot">${logo(40)}<span class="url">${txt}</span></div>`;
+const phone = (img, x, y, w, rot = 0, extra = '') => `<div class="phone" style="left:${x}px;top:${y}px;width:${w}px;height:${Math.round(w * 2.17)}px;transform:rotate(${rot}deg);border-radius:${Math.round(w * .15)}px;padding:${Math.round(w * .035)}px;${extra}">
+  <div class="notch" style="top:${Math.round(w * .06)}px;width:${Math.round(w * .28)}px;height:${Math.round(w * .07)}px;margin-left:-${Math.round(w * .14)}px;border-radius:${Math.round(w * .04)}px"></div><div class="vp" style="border-radius:${Math.round(w * .12)}px">${[].concat(img).map((s, i) => `<img class="shot sl" data-i="${i}" src="${A}${s}">`).join('')}</div></div>`;
+const browser = (img, x, y, w, ratio = 860 / 1366, extra = '') => `<div class="browser" style="left:${x}px;top:${y}px;width:${w}px;${extra}">
+  <div class="bar"><i></i><i></i><i></i></div><div class="vp" style="height:${Math.round((w - 36) * ratio)}px">${[].concat(img).map((s, i) => `<img class="shot sl" data-i="${i}" src="${A}${s}">`).join('')}</div></div>`;
+
+// ---------------- القوالب ----------------
+const T = {
+  avatar: { w: 1080, h: 1080, html: () => `<div class="abs" style="inset:0;background:var(--grad)"></div>
+      <div class="blob" style="width:70%;height:70%;background:#fff;opacity:.18;top:-20%;right:-20%"></div>
+      <div class="abs" style="inset:0;display:grid;place-items:center">
+        <span style="width:440px;height:440px;border-radius:50%;background:var(--bg);display:grid;place-items:center;box-shadow:0 0 0 46px rgba(255,255,255,.22)">
+          <span style="width:170px;height:170px;border-radius:50%;background:var(--em)"></span></span></div>` },
+
+  'avatar-name': { w: 1080, h: 1080, html: () => `${bg()}
+      <div class="abs" style="inset:0;display:grid;place-items:center;align-content:center;gap:46px">
+        <div style="justify-self:center">${mark(400)}</div>
+        <div class="word" style="font-size:132px;text-align:center">Prime<b>View</b></div></div>` },
+
+  'fb-cover': { w: 1640, h: 624, html: () => `${bg()}
+      <div class="abs" style="left:50%;top:50%;transform:translate(-50%,-50%);width:1000px;text-align:center">
+        <div class="h" style="font-size:72px">نصمّم حضورك الرقمي <span class="g">بمعايير عالمية</span></div>
+        <div class="muted" style="font-size:34px;margin-top:18px">مواقع • تطبيقات • أنظمة ذكية للمطاعم والمقاهي</div>
+        <div class="url" style="margin-top:26px">${SITE}</div></div>
+      ${phone('ph-menu-light.jpg', 1330, 120, 200, -8, 'opacity:.95')}
+      ${phone('ph-hero-dark.jpg', 90, 150, 190, 7, 'opacity:.95')}` },
+
+  og: { w: 1200, h: 630, html: () => `${bg()}
+      <div class="abs" style="right:70px;top:90px;width:600px">
+        ${logo(44)}
+        <div class="h" style="font-size:62px;margin-top:40px">نصمّم حضورك الرقمي <span class="g">بمعايير عالمية</span></div>
+        <div class="muted" style="font-size:28px;margin-top:20px">مواقع وتطبيقات وأنظمة ذكية للمطاعم والمقاهي</div>
+        <div style="margin-top:34px"><span class="chip" style="font-size:24px;padding:12px 24px"><span class="d"></span>جرّب نظام الكافيه مباشرة</span></div></div>
+      ${browser('c-dashboard.png', -60, 150, 560, 860 / 1366, 'transform:rotate(4deg)')}
+      ${phone('ph-menu-light.jpg', 330, 210, 180, -6)}` },
+
+  'post-1': { w: 1080, h: 1350, html: () => `${bg()}
+      <div class="abs" style="right:80px;left:80px;top:110px;text-align:center">
+        <span class="eyebrow">أهلاً بكم في PrimeView 👋</span>
+        <div class="h" style="font-size:96px;margin-top:40px">نصمّم حضورك<br>الرقمي <span class="g">بمعايير<br>عالمية</span></div>
+        <div class="muted" style="font-size:36px;margin-top:30px">استوديو تصميم مواقع وتطبيقات وأنظمة ذكية</div></div>
+      ${browser('desk-hero-light.jpg', 170, 720, 740, 1080 / 1920)}
+      ${foot()}` },
+
+  'post-2': { w: 1080, h: 1350, html: () => {
+      const sv = [['🌐', 'تصميم مواقع'], ['📱', 'تطبيقات جوال'], ['☕', 'أنظمة مطاعم ومقاهي'], ['🎨', 'هوية بصرية وشعارات'], ['📶', 'NFC للطاولات'], ['⭐', 'بطاقات ولاء رقمية']];
+      return `${bg()}
+      <div class="abs" style="right:80px;left:80px;top:100px;text-align:center">
+        <span class="eyebrow">خدماتنا</span>
+        <div class="h" style="font-size:76px;margin-top:30px">كل ما يحتاجه مشروعك<br><span class="g">بمكان واحد</span></div></div>
+      <div class="abs" style="left:80px;right:80px;top:470px;display:grid;grid-template-columns:1fr 1fr;gap:28px">
+        ${sv.map(([i, t]) => `<div class="card" style="padding:38px 34px;display:flex;align-items:center;gap:24px">
+          <span style="width:96px;height:96px;flex:none;border-radius:28px;display:grid;place-items:center;font-size:52px;background:linear-gradient(135deg,rgba(14,159,110,.14),rgba(91,191,233,.18))">${i}</span>
+          <span class="h" style="font-size:40px">${t}</span></div>`).join('')}</div>
+      ${foot()}`; } },
+
+  'post-3': { w: 1080, h: 1350, html: () => `${bg()}
+      <div class="abs" style="right:80px;top:120px;width:520px">
+        <span class="eyebrow">منيو رقمي</span>
+        <div class="h" style="font-size:84px;margin-top:34px">الزبون يمسح<br><span class="g">QR</span>…<br>ويطلب من طاولته</div>
+        <div class="muted" style="font-size:34px;margin-top:30px;line-height:1.6">بدون تطبيق، بدون انتظار النادل. الطلب يوصل للمطبخ بلحظته.</div>
+        <div style="margin-top:44px;display:grid;gap:18px;justify-items:start">
+          <span class="chip"><span class="d"></span>عربي بالكامل</span><span class="chip"><span class="d"></span>يعمل على كل الجوالات</span></div></div>
+      ${phone('ph-menu-added-light.jpg', 70, 170, 400, -4)}
+      ${foot()}` },
+
+  'post-4': { w: 1080, h: 1350, html: () => `${bg()}
+      <div class="abs" style="right:80px;left:80px;top:110px;text-align:center">
+        <span class="eyebrow">شاشة المطبخ والكاشير</span>
+        <div class="h" style="font-size:80px;margin-top:34px">الطلب يوصل المطبخ<br><span class="g">بلحظته</span> 🔔</div>
+        <div class="muted" style="font-size:34px;margin-top:24px">جديد ← قيد التحضير ← جاهز ← تحصيل</div></div>
+      ${browser('c-orders-light.png', 70, 560, 940)}
+      ${foot()}` },
+
+  'post-5': { w: 1080, h: 1350, html: () => {
+      const P = window.PLANS;
+      return `${bg()}
+      <div class="abs" style="right:80px;left:80px;top:90px;text-align:center">
+        <span class="eyebrow">نظام الكافيه الذكي</span>
+        <div class="h" style="font-size:76px;margin-top:28px">باقات واضحة، <span class="g">بلا مفاجآت</span></div></div>
+      <div class="abs" style="left:70px;right:70px;top:400px;display:grid;gap:26px">
+        ${P.items.map((p) => `<div class="card" style="padding:34px 40px;display:flex;align-items:center;justify-content:space-between;gap:20px;${p.featured ? 'background:linear-gradient(var(--card),var(--card)) padding-box,var(--grad) border-box;border:5px solid transparent' : ''}">
+          <div><div class="h" style="font-size:46px">${p.name} ${p.featured ? '<span style="font-size:24px;vertical-align:middle;padding:6px 16px;border-radius:99px;background:var(--grad);color:#fff">الأكثر طلباً</span>' : ''}</div>
+            <div class="muted" style="font-size:28px;margin-top:8px">${p.features.slice(0, 2).join(' • ')}</div></div>
+          <div style="text-align:left;direction:ltr;flex:none"><span class="h" style="font-size:78px">${P.currency}${p.monthly}</span><span class="muted" style="font-size:28px"> /شهر</span>
+            <div class="muted" style="font-size:24px">تجهيز ${P.currency}${p.setup} مرة واحدة</div></div></div>`).join('')}</div>
+      <div class="abs muted" style="left:80px;right:80px;top:1130px;text-align:center;font-size:28px">الاشتراك السنوي يوفّر عليك شهرين</div>
+      ${foot()}`; } },
+
+  'post-6': { w: 1080, h: 1350, dark: true, html: () => `${bg(true)}
+      <div class="abs" style="right:80px;left:80px;top:110px;text-align:center">
+        <span class="eyebrow" style="color:#5ee0ad;background:rgba(47,202,145,.14)">🧪 تجربة مباشرة</span>
+        <div class="h" style="font-size:88px;margin-top:36px">لا تصدّق الكلام…<br><span class="g">جرّب بنفسك</span></div>
+        <div style="font-size:34px;margin-top:26px;color:#a7ab9f">اطلب كزبون، حضّر بالمطبخ، وحصّل بالكاشير<br>نسخة كاملة من النظام تعمل من جوالك الآن</div></div>
+      ${phone('ph-menu-dark.jpg', 140, 590, 240, -6)}
+      ${browser('c-orders-dark.png', 370, 640, 620, 860 / 1366, 'background:#13282c;box-shadow:0 50px 90px -30px rgba(0,0,0,.7),inset 0 0 0 2px #21393d')}
+      <div class="abs" style="left:0;right:0;bottom:135px;text-align:center"><span class="btn">جرّب النظام ←</span></div>
+      <div class="foot" style="color:#f3eadb">${logo(40)}<span class="url" style="color:#a7ab9f">${SITE}/demo</span></div>` },
+
+  'post-7': { w: 1080, h: 1350, html: () => `${bg()}
+      <div class="abs" style="right:80px;left:80px;top:110px;text-align:center">
+        <span class="eyebrow">نهاري ☀️ وليلي 🌙</span>
+        <div class="h" style="font-size:80px;margin-top:34px">يتبدّل <span class="g">تلقائياً</span><br>حسب وقت اليوم</div></div>
+      <div class="abs" style="left:80px;right:80px;top:540px;height:640px;display:grid;grid-template-columns:1fr 1fr;gap:30px">
+        <div style="position:relative">${phone('ph-menu-light.jpg', 60, 0, 300, -3)}</div>
+        <div style="position:relative">${phone('ph-menu-dark.jpg', 60, 0, 300, 3)}</div></div>
+      ${foot()}` },
+
+  story: { w: 1080, h: 1920, html: () => `${bg()}
+      <div class="abs" style="right:80px;left:80px;top:220px;text-align:center">
+        ${logo(48).replace('logo-row', 'logo-row" style="justify-content:center;font-size:48px')}
+        <div class="h" style="font-size:96px;margin-top:70px">جرّب نظام<br>الكافيه <span class="g">مباشرة</span></div>
+        <div class="muted" style="font-size:38px;margin-top:30px">منيو + مطبخ + كاشير — من جوالك</div></div>
+      ${phone('ph-menu-light.jpg', 360, 760, 360, 0)}
+      <div class="abs" style="left:0;right:0;bottom:390px;text-align:center"><span class="btn" style="font-size:40px">${SITE}/demo</span></div>
+      <div class="abs muted" style="left:0;right:0;bottom:330px;text-align:center;font-size:30px">الرابط بالبايو 👆</div>` },
+
+  // ---------------- ريلز (فيديو عمودي) ----------------
+  'reel-menu': { w: 1080, h: 1920, dur: 12, poster: 3, html: () => {
+      const caps = ['الزبون يمسح <span class="g">QR</span>', 'يتصفّح <span class="g">المنيو</span>', 'يضيف للسلة <span class="g">بلمسة</span>', 'يشوف <span class="g">الفعاليات</span>', 'ويطلب من <span class="g">طاولته</span> ✓'];
+      return `${bg()}
+      <div class="abs" style="left:0;right:0;top:170px;text-align:center"><span class="eyebrow">منيو رقمي • PrimeView</span></div>
+      <div class="abs" style="left:60px;right:60px;top:280px;height:240px">${caps.map((c) => `<div class="h cap" style="position:absolute;inset:0;text-align:center;font-size:96px">${c}</div>`).join('')}</div>
+      ${phone(['ph-hero-light.jpg', 'ph-menu-light.jpg', 'ph-menu-added-light.jpg', 'ph-events-light.jpg', 'ph-cart-light.jpg'], 290, 600, 500)}
+      <div class="abs endcard" style="inset:0;background:var(--grad);display:grid;place-items:center;align-content:center;gap:40px;text-align:center;color:#fff">
+        <div class="h" style="font-size:100px">بدك نظام<br>متل هاد لمقهاك؟</div>
+        <span style="display:inline-block;justify-self:center;padding:26px 50px;border-radius:99px;background:#fff;color:#0a7552;font:700 46px 'Readex Pro'">جرّب النظام مباشرة</span>
+        <div style="font:600 34px 'Readex Pro';opacity:.9">الرابط بالبايو 👆</div>
+        <div class="word" style="font-size:64px;color:#fff">PrimeView</div></div>`; },
+    at(t) {
+      const D = 2;
+      [...document.querySelectorAll('.sl')].forEach((img, i) => {
+        const p = i === 0 ? 1 : easeIO(seg(t, i * D + .3, i * D + .8));
+        const q = i === 4 ? 0 : easeIO(seg(t, (i + 1) * D + .3, (i + 1) * D + .8));
+        img.style.transform = `translateX(${(1 - p) * -100 + q * 30}%)`; img.style.filter = `brightness(${1 - q * .35})`; img.style.zIndex = i;
+      });
+      [...document.querySelectorAll('.cap')].forEach((el, i) => {
+        const s = i * D + .3;
+        const a = i === 0 ? ease(seg(t, .2, .8)) : ease(seg(t, s, s + .5));
+        const b = i === 4 ? 0 : ease(seg(t, s + D - .1, s + D + .3));
+        el.style.opacity = a * (1 - b); el.style.transform = `translateY(${(1 - a) * 50 - b * 50}px)`;
+      });
+      const ph = $('.phone'); const intro = ease(seg(t, 0, .9));
+      ph.style.transform = `translateY(${(1 - intro) * 300 + Math.sin(t * 1.6) * 12}px) rotate(${Math.sin(t) * 1.2}deg)`; ph.style.opacity = intro;
+      const e = easeIO(seg(t, 10.2, 10.8)); const ec = $('.endcard');
+      ec.style.clipPath = `circle(${e * 150}% at 50% 100%)`;
+      ec.style.opacity = e > 0 ? 1 : 0;
+    } },
+
+  'reel-system': { w: 1080, h: 1920, dur: 13, poster: 4, html: () => {
+      const caps = ['لوحة تحكم <span class="g">لحظية</span>', 'نقطة بيع <span class="g">سريعة</span>', 'الطلبات <span class="g">بمؤقّت</span>', 'ورديات <span class="g">وصندوق</span>', 'نهاري <span class="g">وليلي</span>'];
+      const shots = ['c-dashboard.png', 'c-pos.png', 'c-orders-light.png', 'c-shifts.png', 'c-orders-dark.png'];
+      return `${bg()}
+      <div class="abs" style="left:0;right:0;top:170px;text-align:center"><span class="eyebrow">الكاشير والإدارة • PrimeView</span></div>
+      <div class="abs" style="left:60px;right:60px;top:280px;height:240px">${caps.map((c) => `<div class="h cap" style="position:absolute;inset:0;text-align:center;font-size:96px">${c}</div>`).join('')}</div>
+      ${browser(shots, 40, 640, 1000, 1)}
+      ${phone('c-m-pos.png', 640, 1180, 330, -5, 'opacity:0')}
+      <div class="abs endcard" style="inset:0;background:var(--grad);display:grid;place-items:center;align-content:center;gap:40px;text-align:center;color:#fff">
+        <div class="h" style="font-size:96px">كل مقهاك<br>بشاشة وحدة</div>
+        <span style="display:inline-block;justify-self:center;padding:26px 50px;border-radius:99px;background:#fff;color:#0a7552;font:700 46px 'Readex Pro'">جرّب النظام مباشرة</span>
+        <div style="font:600 34px 'Readex Pro';opacity:.9">الرابط بالبايو 👆</div>
+        <div class="word" style="font-size:64px;color:#fff">PrimeView</div></div>`; },
+    at(t) {
+      const D = 2;
+      [...document.querySelectorAll('.browser .sl')].forEach((img, i) => {
+        const p = i === 0 ? 1 : easeIO(seg(t, i * D + .3, i * D + .55));
+        const local = clamp((t - i * D) / (D + 1));
+        img.style.opacity = p; img.style.zIndex = i;
+        img.style.objectPosition = `${30 + local * 40}% top`;   // تحريك أفقي ناعم داخل الشاشة العمودية
+      });
+      [...document.querySelectorAll('.cap')].forEach((el, i) => {
+        const s = i * D + .3;
+        const a = i === 0 ? ease(seg(t, .2, .8)) : ease(seg(t, s, s + .5));
+        const b = i === 4 ? 0 : ease(seg(t, s + D - .1, s + D + .3));
+        el.style.opacity = a * (1 - b); el.style.transform = `translateY(${(1 - a) * 50 - b * 50}px)`;
+      });
+      const br = $('.browser'); const intro = ease(seg(t, 0, .9));
+      br.style.transform = `translateY(${(1 - intro) * 200}px) perspective(1800px) rotateX(${(1 - intro) * 14}deg)`; br.style.opacity = intro;
+      const m = ease(seg(t, 4.3, 5)) * (1 - ease(seg(t, 9.8, 10.2)));
+      const ph = document.querySelectorAll('.phone')[0];
+      ph.style.opacity = m; ph.style.transform = `translateY(${(1 - m) * 260}px) rotate(-5deg)`;
+      const e = easeIO(seg(t, 11.2, 11.8)); const ec = $('.endcard');
+      ec.style.clipPath = `circle(${e * 150}% at 50% 100%)`; ec.style.opacity = e > 0 ? 1 : 0;
+    } },
+};
+
+const key = new URLSearchParams(location.search).get('t');
+const tpl = T[key];
+const root = $('#root');
+root.className = 's' + (tpl.dark ? ' dark' : '');
+root.style.width = tpl.w + 'px'; root.style.height = tpl.h + 'px';
+document.body.style.width = tpl.w + 'px'; document.body.style.height = tpl.h + 'px';
+root.innerHTML = tpl.html();
+window.KIT = { w: tpl.w, h: tpl.h, dur: tpl.dur || 0, poster: tpl.poster || 0 };
+window.renderAt = (t) => tpl.at && tpl.at(t);
+if (tpl.at) tpl.at(0);
+window.ready = Promise.all([document.fonts.ready, ...[...document.images].map((i) => i.decode())]);
+</script>
+</body>
+</html>

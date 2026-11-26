@@ -93,6 +93,7 @@ const SECTIONS = [
       F('email', 'البريد الإلكتروني', 'email'),
       F(['social', 'instagram'], 'رابط Instagram', 'url'),
       F(['social', 'facebook'], 'رابط Facebook', 'url'),
+      F(['social', 'tiktok'], 'رابط TikTok', 'url'),
     ],
     lists: [{ path: ['phones'], title: 'أرقام التواصل', label: (i) => i.number || i.label, blank: { label: 'واتساب', number: '', whatsapp: true }, fields: [
       F('label', 'الوصف', 'text', { hint: 'مثل: واتساب، المبيعات، الدعم' }),

@@ -102,6 +102,6 @@ export const DEFAULT_CONTENT = {
       { label: 'واتساب', number: '+352 681 555 332', whatsapp: true },
     ],
     email: '',
-    social: { instagram: '', facebook: '' },
+    social: { instagram: '', facebook: '', tiktok: '' },
   },
 };

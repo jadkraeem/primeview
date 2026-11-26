@@ -121,7 +121,8 @@ function renderContact(ct) {
       <span><small>${esc(p.label)}</small><b>${esc(p.number)}</b></span></a>`;
   }).join('');
   const soc = Object.entries(ct.social || {}).filter(([, u]) => safeHref(u));
-  $('.socials').innerHTML = soc.map(([k, u]) => `<a href="${esc(u)}" target="_blank" rel="noopener">${k === 'instagram' ? 'Instagram' : 'Facebook'}</a>`).join('')
+  const NAMES = { instagram: 'Instagram', facebook: 'Facebook', tiktok: 'TikTok' };
+  $('.socials').innerHTML = soc.filter(([k]) => NAMES[k]).map(([k, u]) => `<a href="${esc(u)}" target="_blank" rel="noopener">${NAMES[k]}</a>`).join('')
     + (ct.email ? `<a href="mailto:${esc(ct.email)}">${esc(ct.email)}</a>` : '');
 
   const wa = phones.find((p) => p.whatsapp);
