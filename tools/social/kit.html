@@ -173,6 +173,64 @@ const T = {
         <div style="position:relative">${phone('ph-menu-dark.jpg', 60, 0, 300, 3)}</div></div>
       ${foot()}` },
 
+  // ============ الدفعة الثانية (محتوى مستمر) ============
+
+  'post-8': { w: 1080, h: 1350, html: () => {
+      const steps = [['1', 'نسمعك', 'نفهم فكرتك وزبائنك وما تحتاجه فعلاً'], ['2', 'نصمّم', 'تشوف شكل مشروعك قبل أي سطر برمجة'], ['3', 'نبني', 'ننفّذ ونختبر على كل الأجهزة'], ['4', 'نسلّم وندعمك', 'نطلق مشروعك ونبقى معك بعده']];
+      return `${bg()}
+      <div class="abs" style="right:80px;left:80px;top:100px;text-align:center">
+        <span class="eyebrow">كيف نشتغل</span>
+        <div class="h" style="font-size:72px;margin-top:28px">من الفكرة إلى<br><span class="g">الإطلاق</span> بأربع خطوات</div></div>
+      <div class="abs" style="left:80px;right:80px;top:470px;display:grid;gap:22px">
+        ${steps.map(([n, t, d]) => `<div class="card" style="padding:28px 34px;display:flex;align-items:center;gap:26px">
+          <span style="width:92px;height:92px;flex:none;border-radius:50%;display:grid;place-items:center;font:800 44px 'Readex Pro';background:linear-gradient(120deg,#0e9f6e,#5bbfe9);color:#fff">${n}</span>
+          <div><div class="h" style="font-size:38px">${t}</div><div class="muted" style="font-size:27px;margin-top:4px">${d}</div></div></div>`).join('')}</div>
+      ${foot()}`; } },
+
+  'post-9': { w: 1080, h: 1350, html: () => `${bg()}
+      <div class="abs" style="right:80px;left:80px;top:110px;text-align:center">
+        <span class="eyebrow">التقارير والأرباح</span>
+        <div class="h" style="font-size:78px;margin-top:30px">اعرف أرباحك <span class="g">بالضبط</span><br>كل يوم 📊</div>
+        <div class="muted" style="font-size:32px;margin-top:22px">مبيعات، مصاريف، صافي ربح، وأكثر صنف مبيعاً — بضغطة</div></div>
+      ${browser('c-dashboard.png', 70, 580, 940)}
+      ${foot()}` },
+
+  'post-10': { w: 1080, h: 1350, html: () => `${bg()}
+      <div class="abs" style="right:80px;top:120px;width:540px">
+        <span class="eyebrow">المخزون والجرد</span>
+        <div class="h" style="font-size:76px;margin-top:32px">ما يخلص صنف<br>وأنت <span class="g">مو داري</span> 📦</div>
+        <div class="muted" style="font-size:33px;margin-top:28px;line-height:1.6">النظام يتابع كمياتك، وينبّهك قبل ما تنفد، ويوقف الصنف تلقائياً إذا خلص.</div>
+        <div style="margin-top:40px;display:grid;gap:16px;justify-items:start">
+          <span class="chip"><span class="d"></span>تنبيه مخزون منخفض</span><span class="chip"><span class="d"></span>جرد تلقائي دقيق</span></div></div>
+      ${phone('ph-menu-light.jpg', 60, 180, 400, -4)}
+      ${foot()}` },
+
+  'post-11': { w: 1080, h: 1350, html: () => `${bg()}
+      <div class="abs" style="right:80px;left:80px;top:110px;text-align:center">
+        <span class="eyebrow">يرجّعلك زبونك</span>
+        <div class="h" style="font-size:72px;margin-top:28px">لمسة وحدة… <span class="g">وولاء دائم</span></div></div>
+      <div class="abs" style="left:80px;right:80px;top:470px;display:grid;gap:24px">
+        <div class="card" style="padding:40px 36px;display:flex;align-items:center;gap:30px">
+          <span style="font-size:90px;flex:none">📶</span>
+          <div><div class="h" style="font-size:42px">ملصقات NFC للطاولات</div><div class="muted" style="font-size:29px;margin-top:6px">الزبون يلمس الطاولة بجواله فيفتح المنيو فوراً — بدون تصوير QR</div></div></div>
+        <div class="card" style="padding:40px 36px;display:flex;align-items:center;gap:30px">
+          <span style="font-size:90px;flex:none">⭐</span>
+          <div><div class="h" style="font-size:42px">بطاقة ولاء رقمية</div><div class="muted" style="font-size:29px;margin-top:6px">أختام تُجمع في محفظة الجوال، وتذكّر زبونك يرجعلك</div></div></div></div>
+      ${foot()}` },
+
+  'post-12': { w: 1080, h: 1350, html: () => {
+      const items = [['🏆', 'معايير عالمية', 'نفس أدوات الشركات الكبرى'], ['💬', 'دعم بالعربي', 'نفهم سوقك ونرد بسرعة'], ['⚡', 'تسليم سريع', 'نظامك جاهز خلال أيام'], ['💸', 'بلا أجهزة غالية', 'يعمل على جوالك وتابلتك']];
+      return `${bg()}
+      <div class="abs" style="right:80px;left:80px;top:100px;text-align:center">
+        <span class="eyebrow">ليش PrimeView؟</span>
+        <div class="h" style="font-size:74px;margin-top:28px">جودة عالمية،<br><span class="g">بقربك</span></div></div>
+      <div class="abs" style="left:80px;right:80px;top:460px;display:grid;grid-template-columns:1fr 1fr;gap:22px">
+        ${items.map(([i, t, d]) => `<div class="card" style="padding:34px 28px">
+          <div style="font-size:64px">${i}</div>
+          <div class="h" style="font-size:36px;margin-top:14px">${t}</div>
+          <div class="muted" style="font-size:27px;margin-top:6px">${d}</div></div>`).join('')}</div>
+      ${foot()}`; } },
+
   story: { w: 1080, h: 1920, html: () => `${bg()}
       <div class="abs" style="right:80px;left:80px;top:220px;text-align:center">
         ${logo(48).replace('logo-row', 'logo-row" style="justify-content:center;font-size:48px')}
@@ -247,6 +305,45 @@ const T = {
       const ph = document.querySelectorAll('.phone')[0];
       ph.style.opacity = m; ph.style.transform = `translateY(${(1 - m) * 260}px) rotate(-5deg)`;
       const e = easeIO(seg(t, 11.2, 11.8)); const ec = $('.endcard');
+      ec.style.clipPath = `circle(${e * 150}% at 50% 100%)`; ec.style.opacity = e > 0 ? 1 : 0;
+    } },
+
+  'reel-themes': { w: 1080, h: 1920, dur: 11, poster: 3, html: () => `${bg()}
+      <div class="abs" style="left:0;right:0;top:170px;text-align:center"><span class="eyebrow">تفاصيل تفرق • PrimeView</span></div>
+      <div class="abs" style="left:60px;right:60px;top:280px;height:230px">
+        <div class="h cap" style="position:absolute;inset:0;text-align:center;font-size:92px">يتبدّل <span class="g">تلقائياً</span></div>
+        <div class="h cap" style="position:absolute;inset:0;text-align:center;font-size:92px">نهاري <span style="color:#e0a526">☀️</span></div>
+        <div class="h cap" style="position:absolute;inset:0;text-align:center;font-size:92px">وليلي <span class="g">🌙</span></div>
+        <div class="h cap" style="position:absolute;inset:0;text-align:center;font-size:84px">مريح لعين <span class="g">زبونك</span></div></div>
+      <div class="abs" style="left:0;right:0;top:600px;height:1000px">
+        <div class="lyr" style="position:absolute;inset:0">${phone('ph-menu-light.jpg', 110, 60, 320, -5)}${browser('c-orders-light.png', 440, 120, 600, 860/1366)}</div>
+        <div class="lyr dk" style="position:absolute;inset:0;opacity:0">${phone('ph-menu-dark.jpg', 110, 60, 320, -5)}${browser('c-orders-dark.png', 440, 120, 600, 860/1366, 'background:#13282c;box-shadow:0 50px 90px -30px rgba(0,0,0,.7),inset 0 0 0 2px #21393d')}</div></div>
+      <div class="abs tog" style="left:50%;top:540px;transform:translateX(-50%)"><span class="chip" style="font-size:30px"><span class="ico">☀️</span> <span class="lbl">الوضع النهاري</span></span></div>
+      <div class="abs endcard" style="inset:0;background:var(--grad);display:grid;place-items:center;align-content:center;gap:40px;text-align:center;color:#fff">
+        <div class="h" style="font-size:92px">نظام مدروس<br>بأدق التفاصيل</div>
+        <span style="display:inline-block;justify-self:center;padding:26px 50px;border-radius:99px;background:#fff;color:#0a7552;font:700 46px 'Readex Pro'">جرّب النظام مباشرة</span>
+        <div style="font:600 34px 'Readex Pro';opacity:.9">الرابط بالبايو 👆</div>
+        <div class="word" style="font-size:64px;color:#fff">PrimeView</div></div>`,
+    at(t) {
+      const intro = ease(seg(t, 0, .9));
+      document.querySelectorAll('.lyr').forEach((l) => { l.style.transform = `translateY(${(1 - intro) * 220}px)`; });
+      // تبديل نهاري/ليلي ثلاث مرات بتلاشٍ ناعم
+      const cyc = [[1.6, 0], [3.4, 1], [5.2, 0], [7.0, 1]];
+      let dark = 0;
+      for (const [tm, d] of cyc) if (t >= tm) dark = d;
+      const prog = (() => { let last = 0, next = 1; for (let i = 0; i < cyc.length; i++) { if (t >= cyc[i][0]) { last = cyc[i][0]; next = cyc[i + 1] ? cyc[i + 1][0] : last + 2; } } return easeIO(seg(t, last, last + .7)); })();
+      document.querySelector('.dk').style.opacity = dark ? prog : (t < 1.6 ? 0 : 1 - prog);
+      const tog = $('.tog .chip');
+      tog.querySelector('.ico').textContent = dark ? '🌙' : '☀️';
+      tog.querySelector('.lbl').textContent = dark ? 'الوضع الليلي' : 'الوضع النهاري';
+      tog.style.opacity = ease(seg(t, .6, 1.2));
+      document.querySelectorAll('.cap').forEach((el, i) => {
+        const s = .4 + i * 2;
+        const a = i === 0 ? ease(seg(t, .3, .9)) : ease(seg(t, s, s + .5));
+        const b = i === 3 ? 0 : ease(seg(t, s + 2 - .1, s + 2 + .3));
+        el.style.opacity = a * (1 - b); el.style.transform = `translateY(${(1 - a) * 46 - b * 46}px)`;
+      });
+      const e = easeIO(seg(t, 9.3, 9.9)); const ec = $('.endcard');
       ec.style.clipPath = `circle(${e * 150}% at 50% 100%)`; ec.style.opacity = e > 0 ? 1 : 0;
     } },
 };

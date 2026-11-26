@@ -36,9 +36,14 @@ const IMAGES = {
   'post-5': 'post-5-pricing',
   'post-6': 'post-6-try-demo',
   'post-7': 'post-7-day-night',
+  'post-8': 'post-8-process',
+  'post-9': 'post-9-reports',
+  'post-10': 'post-10-inventory',
+  'post-11': 'post-11-nfc-loyalty',
+  'post-12': 'post-12-why',
   'story': 'story-try-demo',
 };
-const REELS = { 'reel-menu': 'reel-1-qr-menu', 'reel-system': 'reel-2-cashier-system' };
+const REELS = { 'reel-menu': 'reel-1-qr-menu', 'reel-system': 'reel-2-cashier-system', 'reel-themes': 'reel-3-day-night' };
 
 const mode = process.argv[2] || 'all';
 const only = process.argv[3] ? process.argv[3].split(',') : null;
