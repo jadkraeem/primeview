@@ -246,7 +246,7 @@ h2 { font-size: clamp(1.7rem, 3.6vw, 2.6rem); }
   position: relative; border-radius: var(--r); overflow: hidden; aspect-ratio: 16 / 10;
   background: var(--card); box-shadow: var(--shadow-lg), inset 0 0 0 1px var(--line);
 }
-.work-media video, .work-media img { width: 100%; height: 100%; object-fit: cover; transition: transform 1.2s var(--ease); }
+.work-media video, .work-media img { position: relative; z-index: 1; width: 100%; height: 100%; object-fit: cover; transition: transform 1.2s var(--ease); }
 .work:hover .work-media video, .work:hover .work-media img { transform: scale(1.04); }
 .work-media .wm-fallback { position: absolute; inset: 0; display: grid; place-items: center; background: linear-gradient(135deg, var(--emerald-soft), var(--sky-soft)); font-family: var(--font-head); font-size: 1.3rem; color: var(--muted); }
 .work-media::after { content: ''; position: absolute; inset: 0; border-radius: inherit; pointer-events: none; box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--text) 8%, transparent); }
