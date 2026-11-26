@@ -64,7 +64,7 @@ export const DEFAULT_CONTENT = {
         features: ['منيو عبر QR بهوية مقهاك', 'تعديل الأصناف والأسعار بنفسك', 'إيقاف صنف نفد بضغطة', 'يعمل على كل الجوالات'],
       },
       {
-        name: 'نظام الطلبات', monthly: 22, setup: 120, featured: true,
+        name: 'نظام الطلبات', monthly: 25, setup: 120, featured: true,
         features: ['كل ما في المنيو الرقمي', 'الطلب من الطاولة مباشرة', 'شاشة مطبخ بتنبيه صوتي', 'لوحة كاشير لحظية'],
       },
       {
@@ -102,6 +102,6 @@ export const DEFAULT_CONTENT = {
       { label: 'واتساب', number: '+352 681 555 332', whatsapp: true },
     ],
     email: '',
-    social: { instagram: '', facebook: '', tiktok: '' },
+    social: { instagram: 'https://www.instagram.com/primeview_sy/', facebook: 'https://www.facebook.com/share/1CGFDzJj2e/', tiktok: '' },
   },
 };

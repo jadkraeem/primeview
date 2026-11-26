@@ -15,35 +15,51 @@ const esc = (v) => String(v ?? '').replace(/[&<>"']/g, (c) => ESC[c]);
 const safeHref = (u) => (/^(https:\/\/|assets\/|demo\/)/.test(String(u || '')) ? String(u) : '');
 const digits = (n) => String(n || '').replace(/[^\d]/g, '');
 
-// المحتوى من صفحة الإعدادات، وإذا تعذّر الاتصال نستعمل content.js
-async function loadContent() {
-  return mergeContent(DEFAULT_CONTENT, await fetchSiteContent());
+// ---------------------------------------------------------
+// المحتوى: يظهر فوراً (آخر نسخة محفوظة على الجهاز أو content.js)
+// ثم يتحدّث بهدوء عند وصول أحدث نسخة من صفحة الإعدادات.
+// (قبل ذلك كانت الصفحة فارغة على الجوال حتى يصل رد السيرفر)
+// ---------------------------------------------------------
+const CACHE_KEY = 'pv-content-cache';
+function cachedContent() {
+  try { return JSON.parse(localStorage.getItem(CACHE_KEY) || 'null'); } catch { return null; }
+}
+function saveCache(data) {
+  try { localStorage.setItem(CACHE_KEY, JSON.stringify(data)); } catch { /* تجاهل */ }
 }
 
-// ---------------------------------------------------------
-// رسم الأقسام
-// ---------------------------------------------------------
-function render(c) {
-  $$('[data-bind]').forEach((el) => {
-    const v = el.dataset.bind.split('.').reduce((o, k) => o?.[k], c);
-    el.textContent = v ?? '';
-  });
-  splitWords($('.hero-title'));
+let current = null;     // المحتوى المعروض الآن
+let billing = 'monthly';
 
-  $('#stats').innerHTML = c.stats.map((s, i) => `
+// ---------------------------------------------------------
+// رسم الأقسام (يعيد رسم القسم فقط إذا تغيّرت بياناته)
+// ---------------------------------------------------------
+function render(c, prev = null) {
+  const changed = (k) => !prev || JSON.stringify(prev[k]) !== JSON.stringify(c[k]);
+
+  if (changed('brand')) {
+    $$('[data-bind]').forEach((el) => {
+      const v = el.dataset.bind.split('.').reduce((o, k) => o?.[k], c);
+      el.textContent = v ?? '';
+    });
+    splitWords($('.hero-title'));
+  }
+
+  if (changed('stats')) $('#stats').innerHTML = c.stats.map((s, i) => `
     <div class="stat reveal" style="--d:${i * 0.08}s">
       <b><span class="count" data-to="${Number(s.value) || 0}">0</span>${esc(s.suffix)}</b>
       <span>${esc(s.label)}</span>
     </div>`).join('');
 
-  const words = [...c.services.map((s) => s.title), 'معايير عالمية', 'PrimeView'];
-  const row = words.map((w) => `<span>${esc(w)}</span>`).join('');
-  $('.marquee-track').innerHTML = row + row;
+  if (changed('services')) {
+    const words = [...c.services.map((s) => s.title), 'معايير عالمية', 'PrimeView'];
+    const row = words.map((w) => `<span>${esc(w)}</span>`).join('');
+    $('.marquee-track').innerHTML = row + row;
+    $('.services-grid').innerHTML = c.services.map((s, i) => card(s, i)).join('');
+  }
+  if (changed('why')) $('.why-grid').innerHTML = c.why.map((s, i) => card(s, i)).join('');
 
-  $('.services-grid').innerHTML = c.services.map((s, i) => card(s, i)).join('');
-  $('.why-grid').innerHTML = c.why.map((s, i) => card(s, i)).join('');
-
-  $('.work-list').innerHTML = c.work.map((w) => {
+  if (changed('work')) $('.work-list').innerHTML = c.work.map((w) => {
     const link = safeHref(w.link);
     return `
     <article class="work">
@@ -60,23 +76,30 @@ function render(c) {
     </article>`;
   }).join('');
 
-  renderPlans(c.plans, 'monthly');
-  $('.plans-note').textContent = c.plans.note || '';
-  $('.extras').innerHTML = (c.extras || []).map((e) => `<div class="extra">${esc(e.title)} <span>${esc(e.price)}</span></div>`).join('');
+  if (changed('plans')) {
+    renderPlans(c.plans, billing);
+    if (prev) $$('.plan').forEach((p) => p.classList.add('is-in'));
+    $('.plans-note').textContent = c.plans.note || '';
+  }
+  if (changed('extras')) $('.extras').innerHTML = (c.extras || []).map((e) => `<div class="extra">${esc(e.title)} <span>${esc(e.price)}</span></div>`).join('');
 
-  $('.steps').insertAdjacentHTML('beforeend', c.steps.map((s, i) => `
-    <li class="step reveal" style="--d:${i * 0.15}s"><h3>${esc(s.title)}</h3><p>${esc(s.text)}</p></li>`).join(''));
+  if (changed('steps')) {
+    $$('.steps .step').forEach((li) => li.remove());
+    $('.steps').insertAdjacentHTML('beforeend', c.steps.map((s, i) => `
+      <li class="step reveal" style="--d:${i * 0.15}s"><h3>${esc(s.title)}</h3><p>${esc(s.text)}</p></li>`).join(''));
+  }
 
-  const t = (c.testimonials || []).filter((q) => q && q.text);
-  if (t.length) {
-    $('#testimonials').classList.remove('hidden');
+  if (changed('testimonials')) {
+    const t = (c.testimonials || []).filter((q) => q && q.text);
+    $('#testimonials').classList.toggle('hidden', !t.length);
     $('.quotes').innerHTML = t.map((q, i) => `
       <figure class="card quote reveal" style="--d:${i * 0.1}s"><p>${esc(q.text)}</p>
       <figcaption><b>${esc(q.name)}</b> <span class="muted">· ${esc(q.role)}</span></figcaption></figure>`).join('');
   }
 
-  renderContact(c.contact);
+  if (changed('contact')) renderContact(c.contact);
   $('#year').textContent = new Date().getFullYear();
+  current = c;
 }
 
 function card(s, i) {
@@ -85,10 +108,14 @@ function card(s, i) {
     <h3>${esc(s.title)}</h3><p>${esc(s.text)}</p></article>`;
 }
 
+// على الجوال: نسخة أخف من فيديوهات أعمالنا المحلية (assets/work/x.mp4 ← x-m.mp4)
+const SMALL = matchMedia('(max-width: 760px)').matches;
+const light = (u) => (SMALL && /^assets\/work\/[\w-]+\.(mp4|jpg)$/.test(u) && !/-m\.\w+$/.test(u) ? u.replace(/\.(\w+)$/, '-m.$1') : u);
+
 function mediaTag(w) {
-  const src = safeHref(w.media);
+  const src = light(safeHref(w.media));
   if (!src) return '';
-  const poster = safeHref(w.poster);
+  const poster = light(safeHref(w.poster));
   if (/\.(mp4|webm)$/i.test(src)) {
     return `<video muted loop playsinline preload="none" ${poster ? `poster="${esc(poster)}"` : ''} aria-label="${esc(w.title)}">
       <source src="${esc(src)}" type="video/${src.endsWith('webm') ? 'webm' : 'mp4'}"></video>`;
@@ -127,7 +154,8 @@ function renderContact(ct) {
 
   const wa = phones.find((p) => p.whatsapp);
   const float = $('#waFloat');
-  if (wa) float.href = `https://wa.me/${digits(wa.number)}`; else float.classList.add('hidden');
+  if (wa) float.href = `https://wa.me/${digits(wa.number)}`;
+  float.classList.toggle('hidden', !wa);
   return wa;
 }
 
@@ -145,7 +173,9 @@ function rotator(words) {
   if (!el || !words?.length) return;
   if (reduced) { el.textContent = words[0]; return; }
   let wi = 0, ci = 0, del = false;
+  const hero = $('.hero');
   const tick = () => {
+    if (hero.classList.contains('offscreen') || document.hidden) return setTimeout(tick, 600);
     const w = words[wi];
     el.textContent = w.slice(0, ci);
     if (!del && ci === w.length) { del = true; return setTimeout(tick, 1700); }
@@ -156,36 +186,54 @@ function rotator(words) {
   tick();
 }
 
+// المراقبون يُنشؤون مرة واحدة، و observeReveals تراقب فقط العناصر الجديدة
+// (تُستدعى مرة عند البداية ومرة بعد أي إعادة رسم)
+let revealIO = null;
+let videoIO = null;
 function observeReveals() {
-  const io = new IntersectionObserver((entries) => {
+  revealIO ||= new IntersectionObserver((entries) => {
     entries.forEach((e) => {
       if (!e.isIntersecting) return;
       e.target.classList.add('is-in');
       // صندوق العمل مخفي بالكامل قبل ظهوره، فنراقب السطر كله بدلاً منه
       e.target.querySelector(':scope > .mask-reveal')?.classList.add('is-in');
       if (e.target.classList.contains('stat')) countUp(e.target.querySelector('.count'));
-      io.unobserve(e.target);
+      revealIO.unobserve(e.target);
     });
   }, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
-  $$('.reveal, .work, .steps').forEach((el) => io.observe(el));
+  $$('.reveal, .work, .steps').forEach((el) => {
+    if (el.dataset.obs || el.classList.contains('is-in')) return;
+    el.dataset.obs = '1';
+    revealIO.observe(el);
+  });
 
   // الفيديو يشتغل فقط وهو ظاهر على الشاشة لتوفير البطارية والإنترنت
-  const vio = new IntersectionObserver((entries) => {
+  videoIO ||= new IntersectionObserver((entries) => {
     entries.forEach((e) => {
       const v = e.target;
       if (e.isIntersecting) { v.preload = 'auto'; v.play().catch(() => {}); } else v.pause();
     });
-  }, { threshold: 0.3 });
-  $$('.work-media video').forEach((v) => {
+  }, { threshold: SMALL ? 0.6 : 0.3 });
+  $$('.work-media video:not([data-obs])').forEach((v) => {
+    v.dataset.obs = '1';
     v.addEventListener('loadeddata', () => v.parentElement.querySelector('.wm-fallback')?.remove(), { once: true });
     v.addEventListener('error', () => v.remove(), true);
     if (reduced) return;
-    vio.observe(v);
+    videoIO.observe(v);
   });
-  $$('.work-media img').forEach((img) => {
+  $$('.work-media img:not([data-obs])').forEach((img) => {
+    img.dataset.obs = '1';
     img.addEventListener('load', () => img.parentElement.querySelector('.wm-fallback')?.remove(), { once: true });
     img.addEventListener('error', () => img.remove(), { once: true });
   });
+}
+
+// إيقاف الحركات اللانهائية للأقسام غير الظاهرة على الشاشة
+function pauseOffscreen() {
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach((e) => e.target.classList.toggle('offscreen', !e.isIntersecting));
+  }, { rootMargin: '100px 0px' });
+  $$('.hero, .marquee, .contact-box').forEach((el) => io.observe(el));
 }
 
 function countUp(el) {
@@ -260,7 +308,7 @@ function scrollEffects() {
 // ---------------------------------------------------------
 // التفاعل
 // ---------------------------------------------------------
-function setupBilling(plans) {
+function setupBilling() {
   const box = $('.billing'), pill = $('.billing-pill');
   const place = () => {
     const on = $('.billing .is-on');
@@ -272,7 +320,8 @@ function setupBilling(plans) {
     if (!b || b.classList.contains('is-on')) return;
     $$('.billing button').forEach((x) => x.classList.toggle('is-on', x === b));
     place();
-    renderPlans(plans, b.dataset.billing);
+    billing = b.dataset.billing;
+    renderPlans(current.plans, billing);
     $$('.plan').forEach((p) => p.classList.add('is-in'));
     $$('.price b').forEach((p) => p.classList.add('flip'));
   });
@@ -281,7 +330,10 @@ function setupBilling(plans) {
   document.fonts?.ready.then(place);
 }
 
-function setupForm(wa) {
+// رقم واتساب الحالي (قد يتحدّث بعد وصول أحدث نسخة من الإعدادات)
+const currentWa = () => (current?.contact?.phones || []).find((p) => p.whatsapp && digits(p.number));
+
+function setupForm() {
   const form = $('#contactForm');
   document.addEventListener('click', (e) => {
     const p = e.target.closest('[data-plan]');
@@ -297,6 +349,7 @@ function setupForm(wa) {
       if (!f.value.trim()) { void f.offsetWidth; f.classList.add('is-bad'); ok = false; }
     });
     if (!ok) { err.textContent = 'اكتب اسمك ورقم جوالك حتى نقدر نرد عليك.'; return; }
+    const wa = currentWa();
     if (!wa) { err.textContent = 'رقم التواصل غير متاح حالياً.'; return; }
     const text = `مرحباً PrimeView 👋\nالاسم: ${form.name.value.trim()}\nالجوال: ${form.phone.value.trim()}\nنوع المشروع: ${form.type.value}\n${form.msg.value.trim()}`;
     window.open(`https://wa.me/${digits(wa.number)}?text=${encodeURIComponent(text)}`, '_blank', 'noopener');
@@ -321,15 +374,26 @@ function setupNav() {
 }
 
 // ---------------------------------------------------------
-(async function start() {
-  const c = await loadContent();
+(function start() {
+  // 1) نرسم فوراً بدون انتظار الشبكة
+  const c = mergeContent(DEFAULT_CONTENT, cachedContent());
   render(c);
-  const wa = (c.contact.phones || []).find((p) => p.whatsapp && digits(p.number));
   setupNav();
-  setupBilling(c.plans);
-  setupForm(wa);
+  setupBilling();
+  setupForm();
   observeReveals();
+  pauseOffscreen();
   scrollEffects();
   tiltAndGlow();
   rotator(c.brand.words);
+
+  // 2) أحدث نسخة من صفحة الإعدادات: نحدّث ما تغيّر فقط، ونحفظها للزيارة القادمة
+  fetchSiteContent().then((saved) => {
+    if (!saved) return;
+    saveCache(saved);
+    const fresh = mergeContent(DEFAULT_CONTENT, saved);
+    if (JSON.stringify(fresh) === JSON.stringify(current)) return;
+    render(fresh, current);
+    observeReveals();
+  });
 })();
