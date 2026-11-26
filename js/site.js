@@ -2,6 +2,7 @@
 // PrimeView — رسم المحتوى والحركات
 // =========================================================
 import { DEFAULT_CONTENT } from './content.js';
+import { fetchSiteContent, mergeContent } from './config.js';
 
 const $ = (s, r = document) => r.querySelector(s);
 const $$ = (s, r = document) => [...r.querySelectorAll(s)];
@@ -14,9 +15,9 @@ const esc = (v) => String(v ?? '').replace(/[&<>"']/g, (c) => ESC[c]);
 const safeHref = (u) => (/^(https:\/\/|assets\/)/.test(String(u || '')) ? String(u) : '');
 const digits = (n) => String(n || '').replace(/[^\d]/g, '');
 
-// المرحلة 2: هنا نقرأ المحتوى من قاعدة البيانات
+// المحتوى من صفحة الإعدادات، وإذا تعذّر الاتصال نستعمل content.js
 async function loadContent() {
-  return DEFAULT_CONTENT;
+  return mergeContent(DEFAULT_CONTENT, await fetchSiteContent());
 }
 
 // ---------------------------------------------------------

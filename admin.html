@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <title>الإعدادات | PrimeView</title>
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600&family=Readex+Pro:wght@500;600;700&display=swap">
+  <script src="js/theme-init.js"></script>
+  <link rel="stylesheet" href="css/site.css">
+  <link rel="stylesheet" href="css/admin.css">
+  <script src="vendor/supabase.js"></script>
+</head>
+<body class="admin">
+  <!-- تسجيل الدخول -->
+  <section class="login-wrap hidden" id="login">
+    <div class="blobs" aria-hidden="true"><i></i><i></i><i></i></div>
+    <form class="login-card" id="loginForm">
+      <a class="logo" href="./"><span class="logo-mark" aria-hidden="true"><span></span></span><span class="logo-text">Prime<b>View</b></span></a>
+      <h1>صفحة الإعدادات</h1>
+      <p class="muted">للمدير فقط</p>
+      <label>البريد الإلكتروني<input class="input" type="email" name="email" required autocomplete="username" dir="ltr"></label>
+      <label>كلمة السر<input class="input" type="password" name="password" required autocomplete="current-password" dir="ltr"></label>
+      <button class="btn btn-primary" type="submit">دخول</button>
+      <p class="form-error" role="alert"></p>
+    </form>
+  </section>
+
+  <!-- لا يملك صلاحية -->
+  <section class="login-wrap hidden" id="denied">
+    <div class="login-card">
+      <h1>لا تملك صلاحية</h1>
+      <p class="muted">هذا الحساب ليس مدير موقع PrimeView.</p>
+      <button class="btn btn-ghost" type="button" data-action="signout">خروج</button>
+    </div>
+  </section>
+
+  <!-- المحرر -->
+  <div class="hidden" id="app">
+    <header class="admin-bar">
+      <a class="logo" href="./" target="_blank" rel="noopener" title="فتح الموقع">
+        <span class="logo-mark" aria-hidden="true"><span></span></span><span class="logo-text">Prime<b>View</b></span>
+      </a>
+      <span class="save-state" id="saveState"></span>
+      <div class="admin-actions">
+        <button class="icon-btn" id="themeBtn" type="button" aria-label="تبديل الوضع"><span class="sun">☀️</span><span class="moon">🌙</span></button>
+        <a class="btn btn-ghost btn-sm" href="./" target="_blank" rel="noopener">فتح الموقع ↗</a>
+        <button class="btn btn-primary btn-sm" id="saveBtn" type="button" disabled>حفظ التغييرات</button>
+        <button class="btn btn-ghost btn-sm" type="button" data-action="signout">خروج</button>
+      </div>
+    </header>
+    <div class="admin-body">
+      <nav class="admin-nav" id="adminNav" aria-label="أقسام الإعدادات"></nav>
+      <main class="admin-main" id="editor"></main>
+    </div>
+  </div>
+
+  <div class="toasts" id="toasts" aria-live="polite"></div>
+  <script type="module" src="js/admin.js"></script>
+</body>
+</html>
