@@ -98,6 +98,25 @@ function render(c) {
   observe();
 }
 
+// الفواتير بتنطبع كل وحدة لحالها لما تظهر (حركة ثابتة ~0.9 ثانية)، مو مربوطة بتمرير القسم كله:
+// مع 6 فواتير (وعالموبايل فوق بعض) الربط القديم كان يأخّر الأخيرة ويخليها نص مطبوعة.
+let plansShown = false;
+const printIO = ('IntersectionObserver' in window) ? new IntersectionObserver((es) => {
+  es.forEach((e) => {
+    if (!e.isIntersecting) return;
+    printIO.unobserve(e.target); plansShown = true;
+    printReceipt(e.target, (+e.target.dataset.i % 3) * 140);
+  });
+}, { threshold: 0.05, rootMargin: '0px 0px -8% 0px' }) : null;
+function printReceipt(el, delay) {
+  const t0 = performance.now() + delay;
+  (function step() {
+    const k = Math.min(1, Math.max(0, (performance.now() - t0) / 900));
+    el.style.setProperty('--p', (1 - Math.pow(1 - k, 3)).toFixed(3));
+    if (k < 1) requestAnimationFrame(step);
+  })();
+}
+
 // الباقات كفواتير بتنطبع
 function renderPlans(p) {
   if (!p) return;
@@ -119,7 +138,9 @@ function renderPlans(p) {
       <div class="rc-foot">PV-${String(i + 1).padStart(3, '0')} · شكرًا لاختيارك برايم فيو</div>
     </article></div></div>`;
   }).join('');
-  onScroll();
+  const els = $$('.rc-printer');
+  if (reduce || !printIO || plansShown) els.forEach((el) => el.style.setProperty('--p', 1));   // بدون حركة، أو أُعيد الرسم بعد ما انطبعت
+  else els.forEach((el) => printIO.observe(el));
 }
 
 function renderContact(ct) {
@@ -194,9 +215,6 @@ function onScroll() {
   $('#brush').style.transform = `translateX(${(prog($('#services')) * -120).toFixed(1)}px)`;
   const ps = prog(st);
   parts.forEach((q) => { q.el.style.transform = `translateY(${((.5 - ps) * (60 + q.z * 420)).toFixed(1)}px) rotate(${q.r}deg)`; });
-  // الفواتير بتنطبع وحدة ورا التانية مع التمرير
-  const pp = prog($('#pricing'));
-  $$('.rc-printer').forEach((p, i) => { const v = Math.min(1, Math.max(0, (pp - .12 - i * .06) / .3)); p.style.setProperty('--p', v.toFixed(3)); });
 }
 addEventListener('scroll', onScroll, { passive: true }); addEventListener('resize', onScroll);
 
