@@ -1,206 +1,167 @@
 <!doctype html>
 <html lang="ar" dir="rtl">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>PrimeView | برايم فيو — تصميم مواقع وتطبيقات</title>
-  <meta name="description" content="PrimeView استوديو تصميم مواقع وتطبيقات وأنظمة ذكية للمطاعم والمقاهي بمعايير عالمية.">
-  <meta name="theme-color" content="#f6efe3">
-  <meta property="og:type" content="website">
-  <meta property="og:url" content="https://jadkraeem.github.io/primeview/">
-  <meta property="og:title" content="PrimeView | برايم فيو">
-  <meta property="og:description" content="نصمّم حضورك الرقمي بمعايير عالمية: مواقع وتطبيقات وأنظمة ذكية للمطاعم والمقاهي.">
-  <meta property="og:image" content="https://jadkraeem.github.io/primeview/assets/og.jpg">
-  <meta property="og:image:width" content="1200">
-  <meta property="og:image:height" content="630">
-  <meta property="og:locale" content="ar_AR">
-  <meta name="twitter:card" content="summary_large_image">
-  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600&family=Readex+Pro:wght@500;600;700&display=swap">
-  <link rel="manifest" href="app-site.webmanifest">
-  <link rel="apple-touch-icon" href="assets/app/apple-touch-icon.png">
-  <meta name="mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="default">
-  <meta name="apple-mobile-web-app-title" content="PrimeView">
-  <script src="js/pwa.js" defer></script>
-  <script src="js/theme-init.js"></script>
-  <link rel="stylesheet" href="css/site.css">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>PrimeView · برايم فيو</title>
+<meta name="description" content="برايم فيو: استوديو تصميم مواقع وتطبيقات وأنظمة ذكية للمطاعم والمقاهي والشركات.">
+<meta name="theme-color" content="#0b2a22">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://jadkraeem.github.io/primeview/">
+<meta property="og:title" content="PrimeView | برايم فيو">
+<meta property="og:description" content="نصمّم حضورك الرقمي بمعايير عالمية: مواقع وتطبيقات وأنظمة ذكية للمطاعم والمقاهي.">
+<meta property="og:image" content="https://jadkraeem.github.io/primeview/assets/og.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:locale" content="ar_AR">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="manifest" href="app-site.webmanifest">
+<link rel="apple-touch-icon" href="assets/app/apple-touch-icon.png">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="PrimeView">
+<script src="js/pwa.js" defer></script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Readex+Pro:wght@600;700&family=IBM+Plex+Sans+Arabic:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&family=Aref+Ruqaa:wght@700&display=swap">
+<link rel="stylesheet" href="css/pv-template.css">
+<link rel="stylesheet" href="css/pv-receipt.css">
+<link rel="stylesheet" href="css/v2.css">
 </head>
-<body>
-  <div class="progress" aria-hidden="true"></div>
+<body data-btn="underline">
+<!-- موقع PrimeView على قالب PrimeView (نسخة تجريبية — الموقع الحالي index.html ما تغيّر).
+     المحتوى نفسه من صفحة الإعدادات (pv_content) مع content.js كاحتياط. -->
+<header class="nav">
+  <ul class="links"><li><a href="#services">خدماتنا</a></li><li><a href="#work">أعمالنا</a></li><li><a href="#pricing">الأسعار</a></li></ul>
+  <a href="#top" class="pv-logo" aria-label="PrimeView"><span class="pv-mark" aria-hidden="true"><i></i></span><span class="pv-word">Prime<b>View</b></span></a>
+  <a class="end" href="#contact">ابدأ مشروعك ↖</a>
+</header>
 
-  <header class="nav" id="top">
-    <a class="logo" href="#top" aria-label="PrimeView">
-      <span class="logo-mark" aria-hidden="true"><span></span></span>
-      <span class="logo-text">Prime<b>View</b></span>
-    </a>
-    <nav class="nav-links" aria-label="الأقسام">
-      <a href="#services">خدماتنا</a>
-      <a href="#work">أعمالنا</a>
-      <a href="demo/" class="nav-try">جرّب النظام 🧪</a>
-      <a href="#pricing">الأسعار</a>
-      <a href="#process">كيف نشتغل</a>
-      <a href="#contact">تواصل</a>
-    </nav>
-    <div class="nav-actions">
-      <button class="icon-btn" id="themeBtn" type="button" aria-label="تبديل الوضع النهاري والليلي">
-        <span class="sun">☀️</span><span class="moon">🌙</span>
-      </button>
-      <a class="btn btn-primary btn-sm magnetic" href="#contact">اطلب مشروعك</a>
-      <a class="btn btn-try btn-sm nav-try-mobile" href="demo/">🧪 جرّب</a>
-      <button class="icon-btn menu-btn" id="menuBtn" type="button" aria-label="القائمة" aria-expanded="false">
-        <span></span><span></span><span></span>
-      </button>
+<main id="top">
+  <!-- 1) الواجهة -->
+  <section class="hero light">
+    <div class="hero-grid">
+      <div>
+        <span class="label">استوديو مواقع · تطبيقات · أنظمة</span>
+        <h1 class="rise" id="h-title"></h1>
+        <span class="hand" id="h-hand"></span>
+        <p class="lead rise" data-bind="brand.sub"></p>
+        <div class="hero-cta">
+          <a class="btn-try" href="demo/"><i class="live" aria-hidden="true"></i>جرّب النظام مباشرة<span class="arr" aria-hidden="true">←</span></a>
+          <a class="btn" href="#contact">احكيلنا فكرتك ↖</a>
+        </div>
+      </div>
+      <!-- من شغلنا الحقيقي: كاشير Mr Black على الكمبيوتر والمنيو على الجوال -->
+      <div class="stage" id="stage">
+        <figure class="showcase cup" id="cup">
+          <img src="assets/work/mrblack-themes.jpg" alt="نظام Mr Black: لوحة الكاشير على الكمبيوتر والمنيو على الجوال" width="1280" height="800">
+        </figure>
+        <span class="chip c1">📱 منيو QR</span>
+        <span class="chip c2">🧾 كاشير ومحاسبة</span>
+        <span class="chip c3">🤖 مساعد ذكي</span>
+        <div class="tagcard mono">
+          <div class="row"><span>// من أعمالنا</span><span>01</span></div>
+          <b>Mr Black</b>
+          <div class="row"><span>نظام كافيه متكامل</span><span class="live-txt">● LIVE</span></div>
+        </div>
+      </div>
     </div>
-  </header>
+    <div class="infobar" id="infobar"></div>
+  </section>
 
-  <main>
-    <!-- ============ الواجهة ============ -->
-    <section class="hero">
-      <div class="blobs" aria-hidden="true"><i></i><i></i><i></i></div>
-      <div class="grid-bg" aria-hidden="true"></div>
-      <div class="wrap hero-inner">
-        <div class="hero-copy">
-          <p class="eyebrow reveal">استوديو تصميم رقمي</p>
-          <h1 class="hero-title reveal" data-bind="brand.tagline"></h1>
-          <p class="hero-rotator reveal">نبني لك <span class="rotator" aria-live="polite"></span></p>
-          <p class="lead reveal" data-bind="brand.sub"></p>
-          <div class="hero-cta reveal">
-            <a class="btn btn-try magnetic" href="demo/">🧪 جرّب النظام مباشرة <span aria-hidden="true">←</span></a>
-            <a class="btn btn-ghost magnetic" href="#contact">اطلب مشروعك</a>
-          </div>
-        </div>
-        <div class="hero-visual reveal" aria-hidden="true">
-          <div class="device tilt">
-            <div class="device-bar"><i></i><i></i><i></i></div>
-            <div class="device-screen">
-              <div class="sk sk-head"></div>
-              <div class="sk-row"><div class="sk sk-card"></div><div class="sk sk-card"></div></div>
-              <div class="sk-row"><div class="sk sk-card"></div><div class="sk sk-card"></div></div>
-              <div class="sk sk-btn"></div>
-            </div>
-          </div>
-          <div class="float-chip chip-1">⚡ تحديث لحظي</div>
-          <div class="float-chip chip-2">📱 يعمل على كل الشاشات</div>
-          <div class="float-chip chip-3">🔒 آمن</div>
-        </div>
-      </div>
-      <a class="scroll-hint" href="#stats" aria-label="انزل للأسفل"><span></span></a>
-    </section>
+  <!-- اللاصق: شريط مايل بتدرّج الشركة والخدمات بتمشي عليه (من الموقع القديم) -->
+  <div class="tape-wrap light" aria-hidden="true"><div class="tape"><div class="tape-track" id="tape"></div></div></div>
 
-    <!-- ============ أرقام ============ -->
-    <section class="stats wrap" id="stats"></section>
-
-    <!-- ============ شريط متحرك ============ -->
-    <div class="marquee" aria-hidden="true"><div class="marquee-track"></div></div>
-
-    <!-- ============ الخدمات ============ -->
-    <section class="section wrap" id="services">
-      <header class="section-head reveal">
-        <p class="eyebrow">خدماتنا</p>
-        <h2>كل ما يحتاجه مشروعك ليظهر بأفضل صورة</h2>
-      </header>
-      <div class="cards services-grid"></div>
-    </section>
-
-    <!-- ============ أعمالنا ============ -->
-    <section class="section section-alt" id="work">
-      <div class="wrap">
-        <header class="section-head reveal">
-          <p class="eyebrow">أعمالنا</p>
-          <h2>شغل حقيقي، يشتغل الآن عند زبائننا</h2>
-        </header>
-        <div class="work-list"></div>
-      </div>
-    </section>
-
-    <!-- ============ الأسعار ============ -->
-    <section class="section wrap" id="pricing">
-      <header class="section-head reveal">
-        <p class="eyebrow">نظام الكافيه الذكي</p>
-        <h2>باقات واضحة، بلا مفاجآت</h2>
-        <div class="billing reveal" role="group" aria-label="طريقة الدفع">
-          <button type="button" class="is-on" data-billing="monthly">شهري</button>
-          <button type="button" data-billing="yearly">سنوي <em>وفّر شهرين</em></button>
-          <span class="billing-pill" aria-hidden="true"></span>
-        </div>
-      </header>
-      <div class="plans"></div>
-      <p class="plans-note muted reveal"></p>
-      <div class="extras reveal"></div>
-    </section>
-
-    <!-- ============ ليش نحن ============ -->
-    <section class="section section-alt" id="why">
-      <div class="wrap">
-        <header class="section-head reveal">
-          <p class="eyebrow">ليش PrimeView؟</p>
-          <h2>جودة الشركات العالمية، بقرب منك</h2>
-        </header>
-        <div class="cards why-grid"></div>
-      </div>
-    </section>
-
-    <!-- ============ كيف نشتغل ============ -->
-    <section class="section wrap" id="process">
-      <header class="section-head reveal">
-        <p class="eyebrow">كيف نشتغل</p>
-        <h2>أربع خطوات من الفكرة إلى الإطلاق</h2>
-      </header>
-      <ol class="steps"><span class="steps-line" aria-hidden="true"><span></span></span></ol>
-    </section>
-
-    <!-- ============ آراء ============ -->
-    <section class="section section-alt hidden" id="testimonials">
-      <div class="wrap">
-        <header class="section-head reveal">
-          <p class="eyebrow">آراء عملائنا</p>
-          <h2>كلامهم عنّا</h2>
-        </header>
-        <div class="cards quotes"></div>
-      </div>
-    </section>
-
-    <!-- ============ تواصل ============ -->
-    <section class="section wrap" id="contact">
-      <div class="contact-box reveal">
-        <div class="contact-copy">
-          <p class="eyebrow">تواصل معنا</p>
-          <h2>جاهز نبدأ مشروعك؟</h2>
-          <p class="lead">احكيلنا فكرتك، ونرد عليك بأقرب وقت باقتراح وسعر واضح.</p>
-          <div class="phones"></div>
-          <div class="socials"></div>
-        </div>
-        <form class="contact-form" id="contactForm" novalidate>
-          <label>الاسم<input class="input" name="name" required autocomplete="name"></label>
-          <label>رقم الجوال<input class="input" name="phone" required inputmode="tel" autocomplete="tel" dir="ltr"></label>
-          <label>نوع المشروع
-            <select class="input" name="type">
-              <option>موقع</option><option>تطبيق</option><option>نظام مطعم أو مقهى</option><option>هوية بصرية</option><option>شيء آخر</option>
-            </select>
-          </label>
-          <label>احكيلنا عن فكرتك<textarea class="input" name="msg" rows="4"></textarea></label>
-          <button class="btn btn-primary magnetic" type="submit">أرسل عبر واتساب <span aria-hidden="true">←</span></button>
-          <p class="form-error" role="alert"></p>
-        </form>
-      </div>
-    </section>
-  </main>
-
-  <footer class="footer">
-    <div class="wrap footer-inner">
-      <span class="logo-text">Prime<b>View</b> · برايم فيو</span>
-      <span class="muted">© <span id="year"></span> PrimeView. جميع الحقوق محفوظة.</span>
+  <!-- 2) الخدمات -->
+  <section class="menu light" id="services">
+    <svg class="brush" id="brush" viewBox="0 0 800 300" aria-hidden="true"><path d="M20 230 C 160 40, 300 40, 360 180 S 560 300, 620 120 S 760 30, 790 90" fill="none" stroke-width="70" stroke-linecap="round"/></svg>
+    <div class="menu-head">
+      <div><span class="label">خدماتنا</span><h2 class="big rise">شو منعمل<br>إلك</h2></div>
+      <a class="btn" href="#pricing">شوف الأسعار ↖</a>
     </div>
-  </footer>
+    <div class="svc-grid" id="svc"></div>
+  </section>
 
-  <a class="wa-float" id="waFloat" href="#" target="_blank" rel="noopener" aria-label="راسلنا على واتساب">
-    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2Zm0 18.2a8.2 8.2 0 0 1-4.2-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2Zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8-.2-.1-.4-.1-.6.1l-.8 1c-.1.2-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.3-.4.3-.4.7-1.3.1-.2 0-.3 0-.5l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2 5.2 5.2 0 0 0 1.1 2.7 11.8 11.8 0 0 0 4.5 4c1.7.7 2.3.8 3.2.6.5-.1 1.5-.6 1.7-1.2.2-.6.2-1.1.2-1.2-.1-.1-.3-.2-.5-.3Z"/></svg>
-  </a>
+  <!-- 3) الأعمال -->
+  <section class="work-sec light" id="work">
+    <div class="menu-head"><div><span class="label">أعمالنا</span><h2 class="mid rise">شغل حقيقي،<br>شغّال هلق.</h2></div></div>
+    <div class="works" id="works"></div>
+  </section>
 
-  <script type="module" src="js/site.js"></script>
+  <!-- 4) خطوات الشغل (حلقة بتدور) -->
+  <section class="branches light" id="branches">
+    <div>
+      <span class="label">كيف منشتغل</span>
+      <h3 class="mid rise">أربع خطوات،<br>بلا مفاجآت.</h3>
+      <div class="blist steps-list" id="steps"></div>
+    </div>
+    <div class="ring-wrap">
+      <div class="ring" id="ring"></div>
+      <div class="ring-center"><span class="pv-mark big" aria-hidden="true"><i></i></span></div>
+    </div>
+  </section>
+
+  <!-- 5) ليش نحنا -->
+  <section class="statement" id="statement">
+    <span class="label">ليش PrimeView</span>
+    <h3 class="rise">نفس أدوات الشركات الكبرى، بلغتك وبسعر يناسبك.</h3>
+    <div class="why" id="why"></div>
+  </section>
+
+  <!-- 6) الأسعار = فواتير بتنطبع (توقيعنا) -->
+  <section class="pricing" id="pricing">
+    <div class="pricing-head">
+      <div><span class="label">الأسعار</span><h3 class="big rise">فاتورتك<br>واضحة.</h3></div>
+      <div class="bill" role="group" aria-label="طريقة الدفع">
+        <button type="button" aria-pressed="true" data-bill="monthly">شهري</button>
+        <button type="button" aria-pressed="false" data-bill="yearly">سنوي · شهرين مجانًا</button>
+      </div>
+    </div>
+    <div class="receipts" id="plans"></div>
+    <p class="plans-note" id="plans-note"></p>
+    <div class="extras" id="extras"></div>
+  </section>
+
+  <!-- آراء (تظهر فقط إذا في آراء حقيقية من صفحة الإعدادات) -->
+  <section class="quotes-sec light" id="testimonials" hidden>
+    <span class="label">آراء عملائنا</span>
+    <div class="quotes" id="quotes"></div>
+  </section>
+
+  <!-- 7) تواصل -->
+  <section class="contact" id="contact">
+    <div>
+      <span class="label">تواصل</span>
+      <h3 class="big rise">جاهز<br>نبلّش؟</h3>
+      <p class="lead">احكيلنا فكرتك، ومنرد عليك بأقرب وقت باقتراح وسعر واضح.</p>
+      <div class="phones" id="phones"></div>
+      <div class="socials" id="socials"></div>
+    </div>
+    <form class="cform" id="contactForm" novalidate>
+      <label>الاسم<input name="name" required autocomplete="name"></label>
+      <label>رقم الجوال<input name="phone" required inputmode="tel" autocomplete="tel" dir="ltr"></label>
+      <label>نوع المشروع
+        <select name="type"><option>موقع</option><option>تطبيق</option><option>نظام مطعم أو مقهى</option><option>هوية بصرية</option><option>شيء آخر</option></select>
+      </label>
+      <label>احكيلنا عن فكرتك<textarea name="msg" rows="4"></textarea></label>
+      <button class="rc-btn" type="submit"><span>أرسل عبر واتساب</span><span>↖</span></button>
+      <p class="form-error" role="alert"></p>
+    </form>
+  </section>
+</main>
+
+<footer>
+  <div><span class="pv-word">Prime<b>View</b></span><p class="mono" style="opacity:.6;margin-top:14px">برايم فيو · نصمّم حضورك الرقمي</p></div>
+  <div><h4>الموقع</h4><a href="#services">خدماتنا</a><a href="#work">أعمالنا</a><a href="#pricing">الأسعار</a></div>
+  <div><h4>جرّب</h4><a href="demo/">النظام التجريبي</a></div>
+  <div><h4>تواصل</h4><a href="#contact">راسلنا</a></div>
+  <div class="copy"><span>© <span id="year"></span> PrimeView</span><span>جميع الحقوق محفوظة</span></div>
+</footer>
+
+<a class="wa-float" id="waFloat" href="#" target="_blank" rel="noopener" aria-label="راسلنا على واتساب" hidden>واتساب</a>
+<script type="module" src="js/v2.js"></script>
 </body>
 </html>

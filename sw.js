@@ -6,7 +6,7 @@
 // لا يلمس: Supabase والخطوط (نطاقات أخرى)، أي طلب غير GET، وطلبات الفيديو المجزّأة (Range).
 // عند تغيير منطق هذا الملف: غيّر رقم النسخة حتى تُحذف النسخ القديمة.
 // =========================================================
-const CACHE = 'primeview-v1';
+const CACHE = 'primeview-v2';
 
 self.addEventListener('install', () => self.skipWaiting());
 

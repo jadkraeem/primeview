@@ -1,0 +1,50 @@
+/* =========================================================
+   PrimeView — مجموعة «الفاتورة» (توقيعنا البصري)
+   مكوّن واحد لكل شغلنا: فاتورة الطلب، بطاقة الولاء، تقرير الوردية، عروض الأسعار، باقات موقعنا.
+   القواعد: فاتورة وحدة قوية بكل شاشة · دايماً مت (ورق كريمي، حبر غامق) · لازم تحمل معلومة حقيقية
+   · الحبر وشريط الآلة بلون العميل (--brand / --ink).
+   الاستعمال:
+     <div class="rc-printer" style="--p:0">        ← --p من 0 لـ 1 = قديش طلعت الورقة (بالتمرير)
+       <div class="rc-slot"><article class="rc">…</article></div>
+     </div>
+   ========================================================= */
+.rc {
+  --rc-paper: var(--cream, #f3efe7); --rc-ink: var(--ink, #141019); --rc-faint: color-mix(in srgb, var(--rc-ink) 16%, transparent);
+  position: relative; background: var(--rc-paper); color: var(--rc-ink);
+  padding: 22px 20px 30px; font: 400 12px/1.75 var(--mono, 'IBM Plex Mono', monospace);
+  /* الحافة المسنّنة تحت (متل الفاتورة الممزوعة) */
+  -webkit-mask: radial-gradient(6px at 50% 100%, transparent 98%, #000) 50% 100% / 12px 100% repeat-x;
+          mask: radial-gradient(6px at 50% 100%, transparent 98%, #000) 50% 100% / 12px 100% repeat-x;
+}
+.rc-head { display: grid; justify-items: center; gap: 2px; padding-bottom: 12px; border-bottom: 1px dashed var(--rc-faint); text-align: center; }
+.rc-head .rc-logo { font: 700 20px/1 var(--logo-font, var(--head)); direction: ltr; }
+.rc-head img { height: 38px; filter: brightness(0); }
+.rc-row { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; }
+.rc-row b { font-weight: 600; }
+.rc-sep { border-top: 1px dashed var(--rc-faint); margin: 12px 0; }
+.rc-title { margin: 6px 0 0; font: 800 22px/1.3 var(--head); }
+.rc-big { font: 800 34px/1.1 var(--head); direction: ltr; text-align: end; }
+.rc-big small { font: 500 12px var(--mono); opacity: .7; }
+.rc-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 4px; }
+.rc-list li { display: flex; gap: 8px; }
+.rc-list li::before { content: "✓"; opacity: .7; }
+.rc-btn { display: flex; justify-content: space-between; align-items: center; gap: 10px; background: var(--rc-ink); color: var(--rc-paper); padding: 12px 14px; margin-top: 12px; text-decoration: none; font: 500 12px var(--mono); min-height: 44px; border: 0; width: 100%; cursor: pointer; }
+.rc-btn:hover { opacity: .88; }
+.rc-barcode { height: 42px; margin-top: 14px; background: repeating-linear-gradient(90deg, var(--rc-ink) 0 2px, transparent 2px 4px, var(--rc-ink) 4px 5px, transparent 5px 8px, var(--rc-ink) 8px 11px, transparent 11px 12px); }
+.rc-foot { text-align: center; margin-top: 6px; opacity: .7; }
+/* ختم مطاطي (للباقة المميزة، الهدية الجاهزة، الوردية المطابقة) */
+.rc-stamp { position: absolute; top: 64px; inset-inline-start: 14px; transform: rotate(-12deg); border: 2px solid var(--brand); color: var(--brand); padding: 4px 10px; font: 700 12px var(--head); letter-spacing: .02em; opacity: .85; border-radius: 4px; }
+/* أختام الولاء على الفاتورة */
+.rc-stamps { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin: 6px 0; }
+.rc-stamps i { aspect-ratio: 1; border-radius: 50%; border: 1.5px dashed var(--rc-faint); display: grid; place-items: center; font-style: normal; font-size: 18px; }
+.rc-stamps i.on { border: 2px solid var(--brand); color: var(--brand); transform: rotate(-8deg); }
+
+/* ===== آلة الطباعة: الورقة بتطلع حسب --p (0 → 1) ===== */
+.rc-printer { position: relative; padding-top: 18px; --p: 1; }
+.rc-printer::before { content: ""; position: absolute; top: 0; left: -14px; right: -14px; height: 30px; border-radius: 8px; z-index: 2;
+  background: color-mix(in srgb, var(--brand) 55%, var(--night, #16112e)); border: 1px solid rgba(255, 255, 255, .14); }
+.rc-printer::after { content: ""; position: absolute; top: 18px; left: 6px; right: 6px; height: 4px; z-index: 3; background: var(--deep, #0e0b1d); }
+.rc-slot { overflow: hidden; position: relative; z-index: 1; padding-top: 8px; }
+.rc-slot > .rc { transform: translateY(calc((var(--p) - 1) * 100%)); will-change: transform; }
+
+@media (prefers-reduced-motion: reduce) { .rc-slot > .rc { transform: none !important; } }

@@ -1,0 +1,202 @@
+/* PrimeView على قالب PrimeView — إضافات خاصة بموقعنا فوق template.css و receipt.css
+   ألوان هوية PrimeView الأصلية: بيج + زمردي + سماوي، وتدرّج الزمردي ← السماوي هو توقيع الشركة
+   (بس على اللوغو، الخط اليدوي، وأزرار «جرّب النظام»). */
+:root {
+  --brand: #0e9f6e; --accent: #5bbfe9; --emerald: #0e9f6e; --emerald-ink: #0a7552; --sky: #5bbfe9; --sky-ink: #136f9c; --teal: #2bb3a3;
+  --grad: linear-gradient(120deg, #0e9f6e 0%, #2bb3a3 50%, #5bbfe9 100%);
+  /* الفاتح: بيج PrimeView */
+  --paper: #f6efe3; --paper-2: #fffaf2; --cream: #fffaf2; --ink: #1b2b2c; --ink-2: #66675c; --line-l: #e3d6bf;
+  /* الغامق: الوضع الليلي القديم لموقعنا */
+  --night: #0c1719; --night-2: #102125; --deep: #0a1315; --deepest: #070f10; --glow: #13403a;
+  --pearl-1: #2fca91; --pearl-2: #1d6e74; --pearl-3: #0f3438;
+  --head: 'Readex Pro', 'IBM Plex Sans Arabic', sans-serif; --logo-font: 'Readex Pro', sans-serif;
+}
+
+/* ===== الواجهة: بيج مع توهّج زمردي وسماوي خفيف (متل الموقع القديم) ===== */
+.hero.light { background: radial-gradient(42% 50% at 18% 30%, color-mix(in srgb, var(--sky) 26%, transparent), transparent 70%),
+  radial-gradient(40% 46% at 82% 76%, color-mix(in srgb, var(--emerald) 18%, transparent), transparent 70%), var(--paper); }
+.hero.light .infobar { border-top-color: var(--line-l); }
+.hero.light .infobar div { border-color: var(--line-l); }
+.hero .hand { background: var(--grad); -webkit-background-clip: text; background-clip: text; color: transparent; padding-bottom: .1em; }
+.hero-cta { margin-top: 26px; display: flex; flex-wrap: wrap; align-items: center; gap: 22px; }
+.hero-cta .btn { margin: 0; }
+
+/* صورة شغلنا الحقيقي بإطار بيميل مع الماوس */
+.showcase { margin: 0; width: min(560px, 100%); border-radius: 22px; overflow: hidden; background: var(--paper-2); border: 1px solid var(--line-l); box-shadow: 0 30px 70px -30px rgba(40, 60, 50, .45); animation: bob 6s ease-in-out infinite; }
+.showcase img { width: 100%; height: auto; }
+.chip { position: absolute; z-index: 3; font: 600 14px var(--body); background: var(--paper-2); color: var(--ink); border: 1px solid var(--line-l); border-radius: 999px; padding: 8px 14px; box-shadow: 0 12px 26px -14px rgba(40, 60, 50, .5); animation: floaty 5s ease-in-out infinite; white-space: nowrap; }
+.chip.c1 { top: 10%; right: 0; } .chip.c2 { bottom: 14%; right: 6%; animation-delay: -1.6s; } .chip.c3 { top: 46%; left: -2%; animation-delay: -3.2s; }
+@keyframes floaty { 50% { transform: translateY(-10px); } }
+.hero .tagcard { top: auto; bottom: 2%; left: 4%; background: var(--night); color: var(--cream); border: 0; }
+.live-txt { color: #5ee0ad; }
+@media (max-width: 860px) { .chip.c3 { display: none; } .hero .tagcard { display: none; } }
+
+/* ===== زر «جرّب النظام»: حيوي (تدرّج الشركة + توهّج نابض + نقطة مباشر + سهم بيتحرك) ===== */
+.btn-try { position: relative; isolation: isolate; display: inline-flex; align-items: center; gap: 10px; min-height: 52px; padding: 0 24px; border-radius: 999px;
+  background: var(--grad); background-size: 160% 100%; color: #fff; font: 700 16px var(--head); text-decoration: none; white-space: nowrap;
+  transition: transform .25s cubic-bezier(.2, .8, .2, 1), background-position .5s; }
+.btn-try::before { content: ""; position: absolute; inset: -5px; z-index: -1; border-radius: inherit; background: var(--grad); opacity: .4; filter: blur(10px); animation: tryGlow 2.2s ease-in-out infinite; }
+@keyframes tryGlow { 50% { opacity: .85; transform: scale(1.05); } }
+.btn-try:hover { transform: translateY(-3px); background-position: 100% 0; }
+.btn-try:active { transform: translateY(0) scale(.97); }
+.btn-try .live { width: 9px; height: 9px; border-radius: 50%; background: #fff; box-shadow: 0 0 0 0 rgba(255, 255, 255, .7); animation: livePing 1.6s ease-out infinite; }
+@keyframes livePing { 70% { box-shadow: 0 0 0 9px rgba(255, 255, 255, 0); } 100% { box-shadow: 0 0 0 0 rgba(255, 255, 255, 0); } }
+.btn-try .arr { display: inline-block; animation: nudge 1.4s ease-in-out infinite; }
+@keyframes nudge { 50% { transform: translateX(-5px); } }
+@media (prefers-reduced-motion: reduce) { .btn-try::before, .btn-try .live, .btn-try .arr, .chip, .showcase { animation: none; } }
+
+/* اللوغو: علامة مربعة + كلمة، بلا تدرّج */
+.pv-logo { display: inline-flex; align-items: center; gap: 10px; text-decoration: none; direction: ltr; }
+.pv-mark { width: 30px; height: 30px; border-radius: 9px; background: var(--grad); display: grid; place-items: center; flex-shrink: 0; }
+.pv-mark i { width: 12px; height: 12px; border-radius: 50%; background: var(--cream); display: grid; place-items: center; }
+.pv-mark i::after { content: ""; width: 5px; height: 5px; border-radius: 50%; background: var(--brand); }
+.pv-mark.big { width: 46%; height: auto; aspect-ratio: 1; border-radius: 26%; }
+.pv-mark.big i { width: 40%; height: 40%; }
+.pv-mark.big i::after { width: 40%; height: 40%; }
+.pv-word { font: 700 20px/1 var(--logo-font); direction: ltr; }
+.pv-word b { background: var(--grad); -webkit-background-clip: text; background-clip: text; color: transparent; font-weight: 700; }
+
+.browser { width: min(440px, 92%); }
+.lead { font-size: 17px; }
+
+/* الخدمات */
+.svc-grid { position: relative; margin-top: 56px; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+@media (max-width: 900px) { .svc-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 520px) { .svc-grid { grid-template-columns: 1fr; } }
+.svc { border: 1px solid var(--line-l); padding: 18px; min-height: 230px; display: grid; grid-template-rows: auto auto 1fr; gap: 10px; background: rgba(255, 255, 255, .25); transition: background-color .25s; }
+.svc:hover { background: rgba(255, 255, 255, .6); }
+.svc .idx { font: 400 11px var(--mono); opacity: .6; }
+/* أيقونات ملوّنة: كل خدمة إلها لون، بمربع ناعم من نفس اللون */
+.svc .ic { width: 60px; height: 60px; border-radius: 18px; display: grid; place-items: center; background: color-mix(in srgb, var(--c) 20%, #fff); color: var(--c); border: 1px solid color-mix(in srgb, var(--c) 35%, transparent); transition: transform .3s cubic-bezier(.2, .8, .2, 1); }
+.svc:hover .ic { transform: rotate(-6deg) scale(1.06); }
+.svc svg { width: 44px; height: 44px; stroke: currentColor; fill: none; stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round; }
+.svc h3 { margin: 6px 0 0; font: 700 19px var(--head); }
+.svc p { margin: 0; color: var(--ink-2); font-size: 14.5px; }
+
+/* الأعمال */
+.work-sec { padding: 40px var(--pad) 110px; border-top: 1px solid var(--line-l); }
+.works { margin-top: 40px; display: grid; gap: 56px; }
+.wk { display: grid; grid-template-columns: 1.4fr 1fr; gap: 32px; align-items: center; }
+.wk:nth-child(even) { grid-template-columns: 1fr 1.4fr; }
+.wk:nth-child(even) .wk-media { order: 2; }
+@media (max-width: 860px) { .wk, .wk:nth-child(even) { grid-template-columns: 1fr; } .wk:nth-child(even) .wk-media { order: 0; } }
+.wk-media { border: 1px solid var(--line-l); background: var(--deep); aspect-ratio: 16 / 10; overflow: hidden; position: relative; }
+.wk-media video, .wk-media img { position: relative; z-index: 1; width: 100%; height: 100%; object-fit: cover; }
+.wk-media .fallback { position: absolute; z-index: 0; inset: 0; display: grid; place-items: center; color: var(--cream); font: 600 18px var(--head); opacity: .5; }
+.wk .tag { font: 400 12px var(--mono); color: var(--ink-2); }
+.wk h3 { margin: 8px 0 8px; font: 800 clamp(24px, 3vw, 34px)/1.25 var(--head); }
+.wk p { margin: 0 0 16px; color: var(--ink-2); max-width: 44ch; }
+
+/* الخطوات */
+.steps-list div { grid-template-columns: 34px 1fr; align-items: start; }
+.steps-list .n { font: 400 12px var(--mono); color: var(--ink-2); padding-top: 4px; }
+.steps-list p { margin: 2px 0 0; color: var(--ink-2); font-size: 14px; }
+
+/* ليش نحنا */
+.why { position: relative; z-index: 2; margin-top: 56px; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 0; border-top: 1px solid var(--line-d); }
+@media (max-width: 900px) { .why { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+.statement h3 { max-width: 16ch; }
+.why div { padding: 18px 18px 0 0; border-inline-start: 1px solid var(--line-d); }
+.why div:first-child { border-inline-start: 0; padding-inline-start: 0; }
+.why .n { font: 400 12px var(--mono); opacity: .6; }
+.why b { display: block; margin: 6px 0 4px; font: 700 18px var(--head); }
+.why p { margin: 0; opacity: .7; font-size: 14px; }
+.particle.pixel { border-radius: 3px; background: var(--pearl-1); }
+
+/* الأسعار = فواتير */
+.pricing { background: var(--night-2); padding: 120px var(--pad); overflow: hidden; }
+.pricing-head { display: flex; justify-content: space-between; align-items: flex-end; flex-wrap: wrap; gap: 24px; }
+.bill { display: inline-grid; grid-auto-flow: column; border: 1px solid var(--line-d); border-radius: 999px; padding: 4px; }
+.bill button { min-height: 40px; padding: 0 16px; border: 0; border-radius: 999px; background: transparent; color: var(--cream); font: 500 13px var(--mono); cursor: pointer; }
+.bill button[aria-pressed="true"] { background: var(--cream); color: var(--ink); }
+.receipts { margin-top: 56px; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 34px; align-items: start; }
+@media (max-width: 960px) { .receipts { grid-template-columns: 1fr; max-width: 380px; margin-inline: auto; } }
+.receipts .rc-printer { width: 100%; }
+.rc .amount { transition: opacity .2s; }
+.plans-note { margin: 40px 0 0; opacity: .75; font-size: 14px; }
+.extras { margin-top: 14px; display: flex; flex-wrap: wrap; gap: 10px; }
+.extras span { font: 400 12px var(--mono); border: 1px solid var(--line-d); padding: 8px 12px; }
+.extras b { font-weight: 500; opacity: .7; margin-inline-start: 8px; }
+
+/* آراء */
+.quotes-sec { padding: 80px var(--pad); }
+.quotes { margin-top: 24px; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr)); gap: 12px; }
+.quotes figure { margin: 0; border: 1px solid var(--line-l); padding: 18px; }
+
+/* تواصل */
+.contact { background: var(--deep); padding: 120px var(--pad); display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: start; }
+@media (max-width: 860px) { .contact { grid-template-columns: 1fr; } }
+.phones { margin-top: 24px; display: grid; gap: 8px; }
+.phones a { display: flex; justify-content: space-between; align-items: center; gap: 12px; border-bottom: 1px solid var(--line-d); padding: 12px 0; text-decoration: none; min-height: 44px; }
+.phones small { font: 400 12px var(--mono); opacity: .7; }
+.phones b { font: 500 16px var(--mono); direction: ltr; }
+.socials { margin-top: 16px; display: flex; gap: 18px; flex-wrap: wrap; }
+.socials a { font: 500 13px var(--mono); text-decoration: none; border-bottom: 1px solid currentColor; padding-bottom: 3px; }
+.cform { background: var(--cream); color: var(--ink); padding: 24px 22px 30px; display: grid; gap: 14px;
+  -webkit-mask: radial-gradient(6px at 50% 100%, transparent 98%, #000) 50% 100% / 12px 100% repeat-x; mask: radial-gradient(6px at 50% 100%, transparent 98%, #000) 50% 100% / 12px 100% repeat-x; }
+.cform label { display: grid; gap: 6px; font: 500 12px var(--mono); }
+.cform input, .cform select, .cform textarea { font: 400 16px var(--body); color: var(--ink); background: transparent; border: 0; border-bottom: 1px dashed color-mix(in srgb, var(--ink) 35%, transparent); padding: 8px 2px; outline: none; min-height: 44px; }
+.cform input:focus, .cform select:focus, .cform textarea:focus { border-bottom-style: solid; border-bottom-color: var(--ink); }
+.cform .is-bad { border-bottom-color: #b4412f; }
+.form-error { margin: 0; min-height: 1.2em; color: #b4412f; font-size: 13px; }
+
+.wa-float { position: fixed; z-index: 40; bottom: calc(18px + env(safe-area-inset-bottom)); inset-inline-end: 18px; min-height: 48px; display: inline-flex; align-items: center; padding: 0 18px; background: var(--cream); color: var(--ink); text-decoration: none; font: 500 13px var(--mono); border-radius: 999px; border: 1px solid var(--line-l); }
+
+/* ===== اللاصق (من الموقع القديم): شريط مايل بتدرّج الشركة ===== */
+.tape-wrap { overflow: hidden; padding: 34px 0; }
+.tape { background: var(--grad); transform: rotate(-1.5deg) scale(1.04); padding-block: 18px; overflow: hidden; }
+.tape-track { display: flex; gap: 48px; width: max-content; animation: tape 32s linear infinite; }
+.tape-track span { font: 600 clamp(17px, 2vw, 21px) var(--head); color: #fff; white-space: nowrap; }
+.tape-track span::after { content: "✦"; margin-inline-start: 48px; opacity: .75; }
+@keyframes tape { to { transform: translateX(50%); } }
+@media (prefers-reduced-motion: reduce) { .tape-track { animation: none; } }
+
+/* ===== الكتابة: أكبر وأوضح (كانت صغيرة وضايعة جنب العناوين) ===== */
+body { font-size: 17px; }
+.label { font-size: 14px; opacity: .85; }
+.nav a { font-size: 15px; }
+.lead { font-size: clamp(17px, 1.6vw, 20px); line-height: 1.8; opacity: .88; max-width: 42ch; }
+.btn { font-size: 15px; }
+.infobar div { font-size: 14px; opacity: .9; }
+.svc { min-height: 250px; padding: 22px; }
+.svc .idx, .wk .tag, .steps-list .n, .why .n { font-size: 13px; }
+.svc h3 { font-size: 22px; }
+.svc p { font-size: 16.5px; line-height: 1.75; }
+.wk p { font-size: 17.5px; line-height: 1.8; }
+.blist b { font-size: 20px; }
+.steps-list p { font-size: 16px; line-height: 1.7; }
+.ring .bn { font-size: 17px; }
+.statement p { font-size: 18px; }
+.why b { font-size: 21px; }
+.why p { font-size: 16px; line-height: 1.7; }
+.rc { font-size: 14px; line-height: 1.8; }
+.rc-title { font-size: 25px; }
+.rc-btn { font-size: 14px; }
+.plans-note { font-size: 16px; }
+.extras span { font-size: 14px; }
+.bill button { font-size: 14px; }
+.phones small { font-size: 14px; } .phones b { font-size: 19px; }
+.socials a { font-size: 15px; }
+.cform label { font-size: 14px; } .cform input, .cform select, .cform textarea { font-size: 17px; }
+footer h4 { font-size: 13px; } footer a { font-size: 16px; } footer .copy { font-size: 13px; }
+.chip { font-size: 15px; }
+
+/* ===== الموبايل: نفس الشغل، بلا ما يختفي شي ===== */
+@media (max-width: 860px) {
+  .chip.c3 { display: inline-block; } .hero .tagcard { display: block; }
+  .stage { height: auto; min-height: 320px; padding: 26px 0 40px; }
+  .showcase { width: 100%; }
+  .chip { font-size: 13px; padding: 6px 11px; }
+  .chip.c1 { top: 4px; right: 4px; } .chip.c2 { bottom: 14px; right: 10px; } .chip.c3 { top: 42%; left: 0; }
+  .hero .tagcard { bottom: auto; top: 6px; left: 6px; min-width: 0; padding: 8px 12px; font-size: 11px; }
+  .hero .tagcard b { font-size: 16px; }
+  .hero-cta { gap: 16px; }
+  .btn-try { font-size: 16px; min-height: 54px; }
+  .label { font-size: 13px; }
+  .infobar div { font-size: 13px; }
+  .svc { min-height: 0; }
+}
+
+/* خط الآلة الكاتبة ما فيه عربي: الحروف العربية بتاخد خط الموقع الواضح بدل خط النظام الرفيع */
+:root { --mono: 'IBM Plex Mono', 'IBM Plex Sans Arabic', monospace; }
+.label, .infobar div, .rc, .bill button, .phones small, .cform label, footer h4 { font-weight: 500; }
